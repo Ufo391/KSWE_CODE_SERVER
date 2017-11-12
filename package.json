@@ -2,9 +2,14 @@
   "name": "starduell_webserver",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },  
+  "dependencies": {
+    "body-parser": "1.17.2",
+    "express": "4.15.3",
+    "express-session": "~1.15.1"    
   },
   "repository": {
     "type": "git",
@@ -16,4 +21,5 @@
     "url": "https://github.com/Ufo391/KSWE_CODE_SERVER/issues"
   },
   "homepage": "https://github.com/Ufo391/KSWE_CODE_SERVER#readme"
+  
 }
