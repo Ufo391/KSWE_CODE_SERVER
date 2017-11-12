@@ -1,7 +1,9 @@
 // dependencies
 var express = require('express');
-
 var db = require('./app/model/databaseAPI')
+var url = require('url');
+var url_parts = url.parse('/login', true);
+var query = url_parts.query;
 
 // instances
 var app = express();
@@ -25,5 +27,8 @@ var server = app.listen(server_port, function () {
 // routes
 
 app.get('/login', function (req, res) {
-    db.read(req,res);
+  //console.log(req);  
+  console.log(req.query.name);
+  db.read(req,res);
+  
 })
