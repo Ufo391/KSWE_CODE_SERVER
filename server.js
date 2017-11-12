@@ -2,6 +2,7 @@
 var express = require('express');
 var db = require('./app/model/databaseAPI')
 var url = require('url');
+var account = require('./app/model/account');
 var url_parts = url.parse('/login', true);
 var query = url_parts.query;
 
@@ -27,8 +28,5 @@ var server = app.listen(server_port, function () {
 // routes
 
 app.get('/login', function (req, res) {
-  //console.log(req);  
-  console.log(req.query.name);
-  db.read(req,res);
-  
+  res.send(account.login(1,req.query.password));
 })

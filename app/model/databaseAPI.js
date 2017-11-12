@@ -1,12 +1,17 @@
 var fs = require("fs");
 
-function read(req, res){
+var database = '{"user":[{"id":1,"name":"hannes","password":"test"},{"id":2,"name":"rudi","password":"test"}]}';
 
-    fs.readFile( __dirname + "/" + "users.json", 'utf8', function (err, data) {
-        //console.log( data );
-        res.end( data );
-    });
+function read(id){
 
+    var obj = JSON.parse(database);
+
+    obj.user.forEach(function(element) {
+        if(id === element.id){
+            console.log("goal");
+            return element.password;
+        }        
+    });        
 }
 
 module.exports.read = read;
