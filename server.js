@@ -27,6 +27,6 @@ var server = app.listen(server_port, function () {
 
 // routes
 
-app.get('/login', function (req, res) {
-  res.send(account.login(1,req.query.password));
+app.get('/login', function (req, res) {      
+  res.send(account.login(req.query.id,req.query.password));
 })
