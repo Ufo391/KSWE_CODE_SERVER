@@ -2,7 +2,7 @@ var db = require('./databaseAPI');
 
 function login(id, password){    
     
-    //db.read(id);
+    console.log(id + " - " + password);
     if(password === "pass"){
         return true;
     }
