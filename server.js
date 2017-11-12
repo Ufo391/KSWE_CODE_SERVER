@@ -1,62 +1,32 @@
-'use strict';
+// dependencies
+var express = require('express');
+var db = require('./app/model/databaseAPI')
+var url = require('url');
+var account = require('./app/model/account');
+var url_parts = url.parse('/login', true);
+var query = url_parts.query;
 
-/*
- * nodejs-express-mongoose
- * Copyright(c) 2015 Madhusudhan Srinivasa <madhums8@gmail.com>
- * MIT Licensed
- */
+// instances
+var app = express();
 
-/**
- * Module dependencies
- */
 
-require('dotenv').config();
+// attributes
+var server_port = 3000;
 
-const fs = require('fs');
-const join = require('path').join;
-const express = require('express');
-const mongoose = require('mongoose');
-const passport = require('passport');
-const config = require('./config');
 
-const models = join(__dirname, 'app/models');
-const port = process.env.PORT || 3000;
+// functions
 
-const app = express();
-const connection = connect();
+var server = app.listen(server_port, function () {
 
-/**
- * Expose
- */
+  var host = server.address().address
+  var port = server.address().port
 
-module.exports = {
-  app,
-  connection
-};
+  console.log("Server listening at http://%s:%s", host, port)
 
-// Bootstrap models
-fs.readdirSync(models)
-  .filter(file => ~file.indexOf('.js'))
-  .forEach(file => require(join(models, file)));
+})
 
-// Bootstrap routes
-require('./config/passport')(passport);
-require('./config/express')(app, passport);
-require('./config/routes')(app, passport);
+// routes
 
-connection
-  .on('error', console.log)
-  .on('disconnected', connect)
-  .once('open', listen);
-
-function listen () {
-  if (app.get('env') === 'test') return;
-  app.listen(port);
-  console.log('Express app started on port ' + port);
-}
-
-function connect () {
-  var options = { server: { socketOptions: { keepAlive: 1 } } };
-  var connection = mongoose.connect(config.db, options).connection;
-  return connection;
-}
+app.get('/login', function (req, res) {
+  res.send(account.login(1,req.query.password));
+})
