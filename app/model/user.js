@@ -48,6 +48,15 @@ UserSchema.methods.comparePassword = function (passw, cb) {
     });
 };
 
+function compare(passw, cb) {
+    bcrypt.compare(passw, this.password, function (err, isMatch) {
+        if (err) {
+            return cb(err);
+        }
+        cb(null, isMatch);
+    });
+};
+
 function hash(password, username){
 
     _password = password;
@@ -61,16 +70,11 @@ function hash(password, username){
             if (err) {
                 console.log(err);
             }            
-            db.insert(_name,hash);            
+            db.create(_name,hash);            
         });
     });
 }
 
-/*
-function hash(password){
-    return bcrypt.hashSync("my password", bcrypt.genSaltSync(10));
-}
-*/
-
+module.exports.compare = compare;
 module.exports.hash = hash;
 //module.exports = mongoose.model('User', UserSchema);

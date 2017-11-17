@@ -60,7 +60,7 @@ app.get('/login', function (req, res) {
 
 
 function test_run(){
-  //User.hash("passwort","Hans");
+  
 }
 
 // User registrieren
@@ -80,67 +80,64 @@ apiRoutes.post('/signup', function(req, res) {
  if (!req.body.name || !req.body.password) {
    res.json({success: false, msg: 'Please pass name and password.'});
  } else {  
-    var hash = User.hash(req.body.password,req.body.name);         
+    var hash = User.hash(req.body.password, "" + req.body.name);         
 
     res.json({success: true, msg: 'Successful created new user.'});     
  }
 });
 
-/*
-apiRoutes.post('/signup', function(req, res) {
-  if (!req.body.name || !req.body.password) {
-    res.json({success: false, msg: 'Please pass name and password.'});
-  } else {
-    var newUser = new User({
-      name: req.body.name,
-      password: req.body.password
-    });
-    // save the user
-    newUser.save(function(err) {
-      if (err) {
-        return res.json({success: false, msg: 'Username already exists.'});
-      }
-      res.json({success: true, msg: 'Successful created new user.'});
-    });
-  }
- });
-*/
-
-
-
 // connect the api routes under /api/*
 app.use('/api', apiRoutes);
 
 
-
-
 // User Auth with JSON WebToken
+
+// BUG <---------------------------------------------------------------------------------------------------------------------------
+// Passwortabfragevergleich scheitert weil in "DB" der Static Wert behalten wird.
+// Das Passwort in DatabaseAPI wird trotz Insert() nicht überschrieben
+
 
 // route to authenticate a user (POST http://localhost:8080/api/authenticate)
 apiRoutes.post('/authenticate', function(req, res) {
-  User.findOne({
-    name: req.body.name
-  }, function(err, user) {
-    if (err) throw err;
- 
-    if (!user) {
-      res.send({success: false, msg: 'Authentication failed. User not found.'});
+  var eins = db.name;
+  var zwei = req.body.name;
+  console.log(eins + " - " + zwei);
+
+  if(req.body.name == db.name){
+    // check if password matches
+    User.compare(req.body.password, function (err, isMatch) {
+      if (isMatch && !err) {
+        // if user is found and password is right create a token
+        //var token = jwt.encode(user, config.secret); <-------------------------- Token erzeugung
+        // return the information including token as JSON
+        res.json({success: true, token: 'JWT ' + token});
+      } else {
+        res.send({success: false, msg: 'Authentication failed. Wrong password.'});
+      }
+    });
+  }else{
+    res.send({success: false, msg: 'User not found.'});
+  }  
+});
+
+/*
+
+apiRoutes.post('/authenticate', function(req, res) {
+  // check if password matches
+  user.comparePassword(req.body.password, function (err, isMatch) {
+    if (isMatch && !err) {
+      // if user is found and password is right create a token
+      var token = jwt.encode(user, config.secret);
+      // return the information including token as JSON
+      res.json({success: true, token: 'JWT ' + token});
     } else {
-      // check if password matches
-      user.comparePassword(req.body.password, function (err, isMatch) {
-        if (isMatch && !err) {
-          // if user is found and password is right create a token
-          var token = jwt.encode(user, config.secret);
-          // return the information including token as JSON
-          res.json({success: true, token: 'JWT ' + token});
-        } else {
-          res.send({success: false, msg: 'Authentication failed. Wrong password.'});
-        }
-      });
+      res.send({success: false, msg: 'Authentication failed. Wrong password.'});
     }
   });
 });
 
+
+*/
 
 
 
