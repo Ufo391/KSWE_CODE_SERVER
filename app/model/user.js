@@ -47,21 +47,7 @@ UserSchema.methods.comparePassword = function (passw, cb) {
 };
 
 function hash(password){
-        return bcrypt.genSalt(10, function (err, salt) {
-            if (err) {
-                console.log("eins");
-                return err;
-            }
-            return bcrypt.hash(password, salt, function (err, hash) {
-                if (err) {
-                    console.log("zwei");                    
-                    return err;
-                }
-                console.log("drei: " + hash);  
-                return hash;
-            });
-        });    
-        console.log("vier");
+    return bcrypt.hashSync("my password", bcrypt.genSaltSync(10));
 }
 
 module.exports.hash = hash;

@@ -45,6 +45,8 @@ var server = app.listen(server_port, function () {
   console.log("Server listening at Port %s", port)
   ip.showServerIP();
 
+  test_run();
+
 })
 
 // routes
@@ -55,11 +57,10 @@ app.get('/login', function (req, res) {
 
 
 
-
-
-
-
-
+function test_run(){
+  var test_var = User.hash("blub");
+  console.log(test_var);
+}
 
 // User registrieren
 
@@ -73,28 +74,16 @@ require('./app/config/passport')(passport);
 var apiRoutes = express.Router();
 
 
-// neuen Benutzer anlegen
-
-// create a new user account (POST http://localhost:8080/api/signup)
+// Erstelle neuen Benutzer (POST http://localhost:8080/api/signup)
 apiRoutes.post('/signup', function(req, res) {
  if (!req.body.name || !req.body.password) {
    res.json({success: false, msg: 'Please pass name and password.'});
  } else {
      var name = req.body.name;
-     var password = req.body.password;
-     
-     var test_var = User.hash(password);
-     res.json({result: test_var}) // <--- Warum undifinied ??? In Funktion .hash() wird hash generiert aber nicht zurückgegeben !?
-     console.log(test_var);
-/*
-   // save the user
-   newUser.save(function(err) {
-     if (err) {
-       return res.json({success: false, msg: 'Username already exists.'});
-     }
-     res.json({success: true, msg: 'Successful created new user.'});
-   });
-   */
+     var password = req.body.password;    
+     var hash = User.hash(password);     
+
+     res.json({success: true, msg: 'Successful created new user.'});     
  }
 });
 
