@@ -60,7 +60,7 @@ app.get('/login', function (req, res) {
 
 
 function test_run(){
-
+  //User.hash("passwort","Hans");
 }
 
 // User registrieren
@@ -79,12 +79,8 @@ var apiRoutes = express.Router();
 apiRoutes.post('/signup', function(req, res) {
  if (!req.body.name || !req.body.password) {
    res.json({success: false, msg: 'Please pass name and password.'});
- } else {
-    var name = req.body.name;
-    var password = req.body.password;    
-    var hash = User.hash(password);     
-    db.insert();
-
+ } else {  
+    var hash = User.hash(req.body.password,req.body.name);         
 
     res.json({success: true, msg: 'Successful created new user.'});     
  }
