@@ -45,5 +45,24 @@ UserSchema.methods.comparePassword = function (passw, cb) {
         cb(null, isMatch);
     });
 };
- 
-module.exports = mongoose.model('User', UserSchema);
+
+function hash(password){
+        return bcrypt.genSalt(10, function (err, salt) {
+            if (err) {
+                console.log("eins");
+                return err;
+            }
+            return bcrypt.hash(password, salt, function (err, hash) {
+                if (err) {
+                    console.log("zwei");                    
+                    return err;
+                }
+                console.log("drei: " + hash);  
+                return hash;
+            });
+        });    
+        console.log("vier");
+}
+
+module.exports.hash = hash;
+//module.exports = mongoose.model('User', UserSchema);
