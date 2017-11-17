@@ -8,6 +8,8 @@ var url = require('url');
 var url_parts = url.parse('/login', true);
 var query = url_parts.query;
 
+var db = require('./app/model/databaseAPI');
+
 
 var bodyParser  = require('body-parser');
 var morgan      = require('morgan');
@@ -58,8 +60,7 @@ app.get('/login', function (req, res) {
 
 
 function test_run(){
-  var test_var = User.hash("blub");
-  console.log(test_var);
+
 }
 
 // User registrieren
@@ -79,11 +80,13 @@ apiRoutes.post('/signup', function(req, res) {
  if (!req.body.name || !req.body.password) {
    res.json({success: false, msg: 'Please pass name and password.'});
  } else {
-     var name = req.body.name;
-     var password = req.body.password;    
-     var hash = User.hash(password);     
+    var name = req.body.name;
+    var password = req.body.password;    
+    var hash = User.hash(password);     
+    db.insert();
 
-     res.json({success: true, msg: 'Successful created new user.'});     
+
+    res.json({success: true, msg: 'Successful created new user.'});     
  }
 });
 
