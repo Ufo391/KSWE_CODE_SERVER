@@ -1,0 +1,5 @@
+http://localhost:3000/login?password=pass&id=5
+
+Passport:
+
+Create: (POST http://localhost:8080/api/signup) Body = name:"" password:"" 

@@ -1,17 +1,27 @@
 var fs = require("fs");
 
-var database = '{"user":[{"id":1,"name":"hannes","password":"test"},{"id":2,"name":"rudi","password":"test"}]}';
+db_name = "asd";
+db_password = "asd";
 
-function read(id){
+function create(name,password){    
+    db_name = name;
+    db_password = password;
+    console.log("Inserted: " + db_name + " | " + db_password);
+}
 
-    var obj = JSON.parse(database);
+function remove(){
 
-    obj.user.forEach(function(element) {
-        if(id === element.id){
-            console.log("goal");
-            return element.password;
-        }        
-    });        
+}
+
+function update(){
+
+}
+
+function read(){
+
 }
 
 module.exports.read = read;
+module.exports.create = create;
+module.exports.remove = remove;
+module.exports.update = update;

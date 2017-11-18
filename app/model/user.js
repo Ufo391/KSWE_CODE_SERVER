@@ -1,9 +1,11 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt');
+var db = require('../model/databaseAPI');
  
-// Thanks to http://blog.matoski.com/articles/jwt-express-node-mongoose/
- 
+var _name  = "";
+var _password = "";
+
 // set up a mongoose model
 var UserSchema = new Schema({
   name: {
@@ -45,5 +47,34 @@ UserSchema.methods.comparePassword = function (passw, cb) {
         cb(null, isMatch);
     });
 };
- 
-module.exports = mongoose.model('User', UserSchema);
+
+function compare(passw, cb) {
+    bcrypt.compare(passw, this.password, function (err, isMatch) {
+        if (err) {
+            return cb(err);
+        }
+        cb(null, isMatch);
+    });
+};
+
+function hash(password, username){
+
+    _password = password;
+    _name = username;
+
+    bcrypt.genSalt(8, function (err, salt) {
+        if (err) {
+            console.log(err);
+        }
+        bcrypt.hash(_password, salt, function (err, hash) {
+            if (err) {
+                console.log(err);
+            }            
+            db.create(_name,hash);            
+        });
+    });
+}
+
+module.exports.compare = compare;
+module.exports.hash = hash;
+//module.exports = mongoose.model('User', UserSchema);
