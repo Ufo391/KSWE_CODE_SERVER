@@ -60,7 +60,7 @@ app.get('/login', function (req, res) {
 
 
 function test_run(){
-  
+  //console.log(db_name);
 }
 
 // User registrieren
@@ -99,11 +99,11 @@ app.use('/api', apiRoutes);
 
 // route to authenticate a user (POST http://localhost:8080/api/authenticate)
 apiRoutes.post('/authenticate', function(req, res) {
-  var eins = db.name;
+  var eins = db_name;
   var zwei = req.body.name;
   console.log(eins + " - " + zwei);
 
-  if(req.body.name == db.name){
+  if(req.body.name == db_name){
     // check if password matches
     User.compare(req.body.password, function (err, isMatch) {
       if (isMatch && !err) {
