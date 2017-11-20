@@ -66,6 +66,7 @@ function hash(password, username){
         if (err) {
             console.log(err);
         }
+        db.db_salt = salt;
         bcrypt.hash(_password, salt, function (err, hash) {
             if (err) {
                 console.log(err);

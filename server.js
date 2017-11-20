@@ -47,7 +47,7 @@ var server = app.listen(server_port, function () {
   console.log("Server listening at Port %s", port)
   ip.showServerIP();
 
-  test_run();
+  //debug();
 
 })
 
@@ -57,11 +57,17 @@ app.get('/login', function (req, res) {
   res.send(account.login(req.query.id,req.query.password));
 })
 
-
-
-function test_run(){
-  //console.log(db_name);
+function debug(res){
+  var str = "Name: " + db_name + " | Passwort: " + db_password + " | Salt: " + db.db_salt;
+  console.log(str);
+  res.send(str);
 }
+
+app.get('/debug',function(req,res){
+  debug(res);
+})
+
+
 
 // User registrieren
 
@@ -74,6 +80,9 @@ require('./app/config/passport')(passport);
 // bundle our routes
 var apiRoutes = express.Router();
 
+
+// WIe wird das Passwort zusammen gesetzt ??? salt concat passowrt ?? 
+// passwort wird jedes mal als falsch erkannt vielleicht weil es im klartext ankommt ??
 
 // Erstelle neuen Benutzer (POST http://localhost:8080/api/signup)
 apiRoutes.post('/signup', function(req, res) {
@@ -92,15 +101,11 @@ app.use('/api', apiRoutes);
 
 // User Auth with JSON WebToken
 
-// BUG <---------------------------------------------------------------------------------------------------------------------------
-// Passwortabfragevergleich scheitert weil in "DB" der Static Wert behalten wird.
-// Das Passwort in DatabaseAPI wird trotz Insert() nicht überschrieben
-
-
 // route to authenticate a user (POST http://localhost:8080/api/authenticate)
 apiRoutes.post('/authenticate', function(req, res) {
   var eins = db_name;
   var zwei = req.body.name;
+  console.log(req.body.password);
   console.log(eins + " - " + zwei);
 
   if(req.body.name == db_name){
@@ -108,11 +113,11 @@ apiRoutes.post('/authenticate', function(req, res) {
     User.compare(req.body.password, function (err, isMatch) {
       if (isMatch && !err) {
         // if user is found and password is right create a token
-        //var token = jwt.encode(user, config.secret); <-------------------------- Token erzeugung
+        var token = jwt.encode(db_name, secret_token);
         // return the information including token as JSON
         res.json({success: true, token: 'JWT ' + token});
       } else {
-        res.send({success: false, msg: 'Authentication failed. Wrong password.'});
+        res.send({success: false, msg: 'Authentication failed. Wrong password.' + isMatch + " - " + err});
       }
     });
   }else{
