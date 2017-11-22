@@ -1,9 +1,9 @@
 var fs = require("fs");
 
-db_name = "";
-db_password = "";
-db_salt = null;
+db_name = "Hans";
+db_password = "$2a$10$auDYyx1oUSkSVRRtZg.3Y.l252pbawB5PAmabALRRsKskFGeojU/S";
 secret_token = "SUPERDUPERGEHEIM";
+db_token = "";
 
 function create(name,password){    
     db_name = name;

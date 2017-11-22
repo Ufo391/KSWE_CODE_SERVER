@@ -1,3 +1,7 @@
+// PASSPWORT ENTFERNEN
+
+
+
 // dependencies
 var express = require('express');
 
@@ -58,7 +62,7 @@ app.get('/login', function (req, res) {
 })
 
 function debug(res){
-
+  
 }
 
 function debug_db(res){
@@ -67,15 +71,13 @@ function debug_db(res){
   res.send(str);
 }
 
-
-
 app.get('/debug',function(req,res){
   debug_db(res);
 })
 
 app.post('/debug1',function(req,res){  
-  User.hashTest(req.body.password);
-  res.send("blub");
+  debug(res);
+  res.send("");
 })
 
 // User registrieren
@@ -85,26 +87,25 @@ mongoose.connect(config.database);
 
 // pass passport for configuration
 require('./app/config/passport')(passport);
-
 // bundle our routes
 var apiRoutes = express.Router();
-
-// Erstelle neuen Benutzer (POST http://localhost:8080/api/signup)
-apiRoutes.post('/signup', function(req, res) {
- if (!req.body.name || !req.body.password) {
-   res.json({success: false, msg: 'Please pass name and password.'});
- } else {  
-    var hash = User.hash(req.body.password, "" + req.body.name);         
-
-    res.json({success: true, msg: 'Successful created new user.', request : req.body});     
- }
-});
-
 // connect the api routes under /api/*
 app.use('/api', apiRoutes);
 
 
+// Erstelle neuen Benutzer (POST http://localhost:8080/api/signup)
+apiRoutes.post('/signup', function(req, res) {
+  if (!req.body.name || !req.body.password) {
+    res.json({success: false, msg: 'Please pass name and password.'});
+  } else {  
+     var hash = User.hash(req.body.password, "" + req.body.name);         
+ 
+     res.json({success: true, msg: 'Successful created new user.', request : req.body});     
+  }
+ });
+
 // User Auth with JSON WebToken
+
 
 // route to authenticate a user (POST http://localhost:8080/api/authenticate)
 apiRoutes.post('/authenticate', function(req, res) {
@@ -117,9 +118,18 @@ apiRoutes.post('/authenticate', function(req, res) {
         // if user is found and password is right create a token
         var token = jwt.encode(db_name, secret_token);
         // return the information including token as JSON
-        res.json({success: true, token: 'JWT ' + token});
+
+
+
+        db_token = token;
+
+
+        var decoded = jwt.decode(token, secret_token);
+        console.log(decoded);
+        console.log(token);
+        res.json({success: true, msg: 'JWT ' + token});
       } else {
-        res.send({success: false, msg: 'Authentication failed. Wrong password.' + isMatch + " - " + err});
+        res.send({success: false, msg: 'Authentication failed. Wrong password.'});
       }
     });
   }else{
@@ -127,27 +137,59 @@ apiRoutes.post('/authenticate', function(req, res) {
   }  
 });
 
-
 // route to a restricted info (GET http://localhost:8080/api/memberinfo)
-apiRoutes.get('/memberinfo', passport.authenticate('jwt', { session: false}), function(req, res) {
+apiRoutes.get('/memberinfo', function(req, res) {  
+
   var token = getToken(req.headers);
+  console.log("Token: " + token);
   if (token) {
-    var decoded = jwt.decode(token, config.secret);
-    User.findOne({
-      name: decoded.name
-    }, function(err, user) {
-        if (err) throw err;
- 
-        if (!user) {
-          return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
-        } else {
-          res.json({success: true, msg: 'Welcome in the member area ' + user.name + '!'});
-        }
-    });
-  } else {
+    var decoded = jwt.decode(token, secret_token);
+    var user_name = decoded;
+    console.log(decoded);
+    console.log("Token decoded: " + user_name);
+    console.log("db_name: " + db_name);
+
+    if(user_name == db_name)
+    {
+      res.json({success: true, msg: 'Welcome in the member area ' + db_name + '!'});
+    }
+    else
+    {
+      return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+    }
+  } 
+  else 
+  {
     return res.status(403).send({success: false, msg: 'No token provided.'});
   }
 });
+
+/*
+// route to a restricted info (GET http://localhost:8080/api/memberinfo)
+apiRoutes.get('/memberinfo', passport.authenticate('jwt', { session: false}), function(req, res) {  
+  var token = getToken(req.headers);
+  console.log("Token: " + token);
+  if (token) {
+    var decoded = jwt.decode(token, config.secret);
+    var user_name = decoded.name;
+    console.log("Token decoded: " + user_name);
+    console.log("db_name: " + db_name);
+
+    if(user_name == db_name)
+    {
+      res.json({success: true, msg: 'Welcome in the member area ' + db_name + '!'});
+    }
+    else
+    {
+      return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+    }
+  } 
+  else 
+  {
+    return res.status(403).send({success: false, msg: 'No token provided.'});
+  }
+});
+*/
 
 /*
 apiRoutes.get('/memberinfo', passport.authenticate('jwt', { session: false}), function(req, res) {
