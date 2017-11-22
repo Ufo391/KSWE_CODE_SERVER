@@ -2,9 +2,9 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt');
 var db = require('../model/databaseAPI');
- 
-var _name  = "";
-var _password = "";
+
+
+_hash = "";
 
 // set up a mongoose model
 var UserSchema = new Schema({
@@ -48,8 +48,8 @@ UserSchema.methods.comparePassword = function (passw, cb) {
     });
 };
 
-function compare(passw, cb) {
-    bcrypt.compare(passw, this.password, function (err, isMatch) {
+function compare(input,hash, cb) {
+    bcrypt.compare(input, hash, function (err, isMatch) {
         if (err) {
             return cb(err);
         }
@@ -59,23 +59,24 @@ function compare(passw, cb) {
 
 function hash(password, username){
 
-    _password = password;
-    _name = username;
-
-    bcrypt.genSalt(8, function (err, salt) {
+    bcrypt.hash(password, 10, function (err, hash) {
         if (err) {
             console.log(err);
-        }
-        db.db_salt = salt;
-        bcrypt.hash(_password, salt, function (err, hash) {
-            if (err) {
-                console.log(err);
-            }            
-            db.create(_name,hash);            
-        });
+        }            
+        db.create(username,hash);            
     });
+
+}
+
+function hashTest(word){
+
+    bcrypt.compare(word, db_password, function(err,res){
+        console.log(res);
+    });
+
 }
 
 module.exports.compare = compare;
 module.exports.hash = hash;
+module.exports.hashTest = hashTest;
 //module.exports = mongoose.model('User', UserSchema);

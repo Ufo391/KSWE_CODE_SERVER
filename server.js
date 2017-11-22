@@ -58,16 +58,25 @@ app.get('/login', function (req, res) {
 })
 
 function debug(res){
+
+}
+
+function debug_db(res){
   var str = "Name: " + db_name + " | Passwort: " + db_password + " | Salt: " + db.db_salt;
   console.log(str);
   res.send(str);
 }
 
+
+
 app.get('/debug',function(req,res){
-  debug(res);
+  debug_db(res);
 })
 
-
+app.post('/debug1',function(req,res){  
+  User.hashTest(req.body.password);
+  res.send("blub");
+})
 
 // User registrieren
 
@@ -80,10 +89,6 @@ require('./app/config/passport')(passport);
 // bundle our routes
 var apiRoutes = express.Router();
 
-
-// WIe wird das Passwort zusammen gesetzt ??? salt concat passowrt ?? 
-// passwort wird jedes mal als falsch erkannt vielleicht weil es im klartext ankommt ??
-
 // Erstelle neuen Benutzer (POST http://localhost:8080/api/signup)
 apiRoutes.post('/signup', function(req, res) {
  if (!req.body.name || !req.body.password) {
@@ -91,7 +96,7 @@ apiRoutes.post('/signup', function(req, res) {
  } else {  
     var hash = User.hash(req.body.password, "" + req.body.name);         
 
-    res.json({success: true, msg: 'Successful created new user.'});     
+    res.json({success: true, msg: 'Successful created new user.', request : req.body});     
  }
 });
 
@@ -103,15 +108,12 @@ app.use('/api', apiRoutes);
 
 // route to authenticate a user (POST http://localhost:8080/api/authenticate)
 apiRoutes.post('/authenticate', function(req, res) {
-  var eins = db_name;
-  var zwei = req.body.name;
-  console.log(req.body.password);
-  console.log(eins + " - " + zwei);
 
   if(req.body.name == db_name){
     // check if password matches
-    User.compare(req.body.password, function (err, isMatch) {
+    User.compare(req.body.password,db_password, function (err, isMatch) {
       if (isMatch && !err) {
+        console.log(true);
         // if user is found and password is right create a token
         var token = jwt.encode(db_name, secret_token);
         // return the information including token as JSON
@@ -124,27 +126,6 @@ apiRoutes.post('/authenticate', function(req, res) {
     res.send({success: false, msg: 'User not found.'});
   }  
 });
-
-/*
-
-apiRoutes.post('/authenticate', function(req, res) {
-  // check if password matches
-  user.comparePassword(req.body.password, function (err, isMatch) {
-    if (isMatch && !err) {
-      // if user is found and password is right create a token
-      var token = jwt.encode(user, config.secret);
-      // return the information including token as JSON
-      res.json({success: true, token: 'JWT ' + token});
-    } else {
-      res.send({success: false, msg: 'Authentication failed. Wrong password.'});
-    }
-  });
-});
-
-
-*/
-
-
 
 
 // route to a restricted info (GET http://localhost:8080/api/memberinfo)
@@ -167,6 +148,29 @@ apiRoutes.get('/memberinfo', passport.authenticate('jwt', { session: false}), fu
     return res.status(403).send({success: false, msg: 'No token provided.'});
   }
 });
+
+/*
+apiRoutes.get('/memberinfo', passport.authenticate('jwt', { session: false}), function(req, res) {
+  var token = getToken(req.headers);
+  if (token) {
+    var decoded = jwt.decode(token, config.secret);
+    User.findOne({
+      name: decoded.name
+    }, function(err, user) {
+        if (err) throw err;
+ 
+        if (!user) {
+          return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+        } else {
+          res.json({success: true, msg: 'Welcome in the member area ' + user.name + '!'});
+        }
+    });
+  } else {
+    return res.status(403).send({success: false, msg: 'No token provided.'});
+  }
+});
+
+*/
  
 getToken = function (headers) {
   if (headers && headers.authorization) {
