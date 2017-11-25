@@ -21,15 +21,20 @@ var app = express();
 // attributes
 var server_port = 3000;
 
-
-// functions
-
 // get our request parameters
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // log to console
 app.use(morgan('dev'));
+
+// bundle our routes
+var apiRoutes = express.Router();
+// connect the api routes under /api/*
+app.use('/api', apiRoutes);
+
+
+// Functions
 
 var server = app.listen(server_port, function () {
 
@@ -45,8 +50,8 @@ var server = app.listen(server_port, function () {
 
 // routes
 
-function debug(res){
-  
+function debug(){
+
 }
 
 function debug_db(res){
@@ -59,43 +64,37 @@ app.get('/debug',function(req,res){
   debug_db(res);
 })
 
-app.post('/debug1',function(req,res){  
-
+app.get('/debug1',function(req,res){  
+  res.send("");
 })
 
 // User registrieren
 
-// bundle our routes
-var apiRoutes = express.Router();
-// connect the api routes under /api/*
-app.use('/api', apiRoutes);
-
-
 // Erstelle neuen Benutzer (POST http://localhost:8080/api/signup)
 apiRoutes.post('/signup', function(req, res) {
-  if (!req.body.name || !req.body.password) {
-    res.json({success: false, msg: 'Please pass name and password.'});
-  } else {  
-     var hash = User.hash(req.body.password, "" + req.body.name);         
- 
-     res.json({success: true, msg: 'Successful created new user.', request : req.body});     
+  if (!req.body.name || !req.body.password) { res.json({success: false, msg: 'Please pass Name and Password.'});} 
+  else 
+  {           
+    if(User.register(req.body.name,req.body.password) == true){
+      res.json({success: true, msg: 'User created.'});
+    }
+    else{
+      res.json({success: false, msg: 'Name is assigned.'});
+    }    
   }
  });
-
-// User Auth with JSON WebToken
 
 
 // route to authenticate a user (POST http://localhost:8080/api/authenticate)
 apiRoutes.post('/authenticate', function(req, res) {
 
+  res.json(User.login(name,password));
+
   if(req.body.name == db_name){
     // check if password matches
     User.compare(req.body.password,db_password, function (err, isMatch) {
       if (isMatch && !err) {
-        console.log(true);
-        // if user is found and password is right create a token
         var token = jwt.encode(db_name, secret_token);
-        // return the information including token as JSON
 
         db_token = token;
         res.json({success: true, msg: 'JWT ' + token});

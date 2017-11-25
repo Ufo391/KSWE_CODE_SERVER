@@ -5,25 +5,33 @@ db_password = "$2a$10$auDYyx1oUSkSVRRtZg.3Y.l252pbawB5PAmabALRRsKskFGeojU/S";
 secret_token = "SUPERDUPERGEHEIM";
 db_token = "";
 
-function create(name,password){    
-    db_name = name;
-    db_password = password;
-    console.log("Inserted: " + db_name + " | " + db_password);
+database = [];
+
+
+module.exports.create = function (name,password){
+        
+    var obj = new Object();
+    obj.name = name;
+    obj.password = password;
+    var str_json = JSON.stringify(obj);
+
+    database.push(str_json);
+    console.log("Inserted: " + database[0]);
 }
 
-function remove(){
-
+module.exports.insertToken = function(name,token){
+    db_token = token;
 }
 
-function update(){
+module.exports.findUser = function(name){
+
+    for (i in database) {
+        var user = JSON.parse(database[i]);
+        if(name == user.name){
+            return user;
+        }
+    } 
+
+    return null;
 
 }
-
-function read(){
-
-}
-
-module.exports.read = read;
-module.exports.create = create;
-module.exports.remove = remove;
-module.exports.update = update;

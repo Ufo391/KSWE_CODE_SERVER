@@ -1,52 +1,61 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
 var bcrypt = require('bcrypt');
 var db = require('../model/databaseAPI');
 
 
-_hash = "";
+// Login/Register
 
-// set up a mongoose model
-var UserSchema = new Schema({
-  name: {
-        type: String,
-        unique: true,
-        required: true
-    },
-  password: {
-        type: String,
-        required: true
-    }
-});
- 
-UserSchema.pre('save', function (next) {
-    var user = this;
-    if (this.isModified('password') || this.isNew) {
-        bcrypt.genSalt(10, function (err, salt) {
+function register(name,password){
+   
+    var result_flag = true;
+
+    if(db.findUser(name) == null){        
+        bcrypt.hash(password, 10, function (err, hash) {
             if (err) {
-                return next(err);
-            }
-            bcrypt.hash(user.password, salt, function (err, hash) {
-                if (err) {
-                    return next(err);
-                }
-                user.password = hash;
-                next();
-            });
-        });
-    } else {
-        return next();
+                console.log(err);
+            }            
+            db.create(name,hash);            
+        });  
     }
-});
- 
-UserSchema.methods.comparePassword = function (passw, cb) {
-    bcrypt.compare(passw, this.password, function (err, isMatch) {
-        if (err) {
-            return cb(err);
+    else{
+        result_flag = false;
+    }
+
+    return result_flag;           
+}
+
+function login(name, password){
+
+    var user = db.findUser(name);
+
+    if(user != null){
+        
+        compare(password,user.password, function (err, isMatch) {
+          
+            if (isMatch && !err) {
+            
+            var token = jwt.encode(name, secret_token);
+            db.insertToken(name,token);
+            return json({success: true, msg: 'JWT ' + token});
+          
+        } else {            
+            return json({success: false, msg: 'Authentication failed. Wrong password.'});
+          
         }
-        cb(null, isMatch);
-    });
-};
+        });
+    }
+    else{
+        
+        return json({success: false, msg: 'User not found.'});
+      
+    }  
+
+}
+
+function getMemberInfo(){
+
+}
+
+// Security
 
 function compare(input,hash, cb) {
     bcrypt.compare(input, hash, function (err, isMatch) {
@@ -57,26 +66,6 @@ function compare(input,hash, cb) {
     });
 };
 
-function hash(password, username){
-
-    bcrypt.hash(password, 10, function (err, hash) {
-        if (err) {
-            console.log(err);
-        }            
-        db.create(username,hash);            
-    });
-
-}
-
-function hashTest(word){
-
-    bcrypt.compare(word, db_password, function(err,res){
-        console.log(res);
-    });
-
-}
-
+module.exports.register = register;
 module.exports.compare = compare;
-module.exports.hash = hash;
-module.exports.hashTest = hashTest;
-//module.exports = mongoose.model('User', UserSchema);
+module.exports.login = login;
