@@ -1,12 +1,7 @@
-// PASSPWORT ENTFERNEN
-
-
-
 // dependencies
 var express = require('express');
 
 var ip = require('./app/util/ip')
-var account = require('./app/model/account');
 
 var url = require('url');
 var url_parts = url.parse('/login', true);
@@ -14,12 +9,8 @@ var query = url_parts.query;
 
 var db = require('./app/model/databaseAPI');
 
-
 var bodyParser  = require('body-parser');
 var morgan      = require('morgan');
-var mongoose    = require('mongoose');
-var passport	= require('passport');
-var config      = require('./app/config/database'); // get db config file
 var User        = require('./app/model/user'); // get the mongoose model
 var jwt         = require('jwt-simple');
 
@@ -40,9 +31,6 @@ app.use(bodyParser.json());
 // log to console
 app.use(morgan('dev'));
 
-// Use the passport package in our application
-app.use(passport.initialize());
-
 var server = app.listen(server_port, function () {
 
   var host = server.address().address
@@ -57,16 +45,12 @@ var server = app.listen(server_port, function () {
 
 // routes
 
-app.get('/login', function (req, res) {      
-  res.send(account.login(req.query.id,req.query.password));
-})
-
 function debug(res){
   
 }
 
 function debug_db(res){
-  var str = "Name: " + db_name + " | Passwort: " + db_password + " | Salt: " + db.db_salt;
+  var str = "Name: " + db_name + " | Passwort: " + db_password;
   console.log(str);
   res.send(str);
 }
@@ -76,17 +60,11 @@ app.get('/debug',function(req,res){
 })
 
 app.post('/debug1',function(req,res){  
-  debug(res);
-  res.send("");
+
 })
 
 // User registrieren
 
-// connect to database
-mongoose.connect(config.database);
-
-// pass passport for configuration
-require('./app/config/passport')(passport);
 // bundle our routes
 var apiRoutes = express.Router();
 // connect the api routes under /api/*
@@ -119,14 +97,7 @@ apiRoutes.post('/authenticate', function(req, res) {
         var token = jwt.encode(db_name, secret_token);
         // return the information including token as JSON
 
-
-
         db_token = token;
-
-
-        var decoded = jwt.decode(token, secret_token);
-        console.log(decoded);
-        console.log(token);
         res.json({success: true, msg: 'JWT ' + token});
       } else {
         res.send({success: false, msg: 'Authentication failed. Wrong password.'});
@@ -141,13 +112,9 @@ apiRoutes.post('/authenticate', function(req, res) {
 apiRoutes.get('/memberinfo', function(req, res) {  
 
   var token = getToken(req.headers);
-  console.log("Token: " + token);
   if (token) {
     var decoded = jwt.decode(token, secret_token);
     var user_name = decoded;
-    console.log(decoded);
-    console.log("Token decoded: " + user_name);
-    console.log("db_name: " + db_name);
 
     if(user_name == db_name)
     {
@@ -163,56 +130,6 @@ apiRoutes.get('/memberinfo', function(req, res) {
     return res.status(403).send({success: false, msg: 'No token provided.'});
   }
 });
-
-/*
-// route to a restricted info (GET http://localhost:8080/api/memberinfo)
-apiRoutes.get('/memberinfo', passport.authenticate('jwt', { session: false}), function(req, res) {  
-  var token = getToken(req.headers);
-  console.log("Token: " + token);
-  if (token) {
-    var decoded = jwt.decode(token, config.secret);
-    var user_name = decoded.name;
-    console.log("Token decoded: " + user_name);
-    console.log("db_name: " + db_name);
-
-    if(user_name == db_name)
-    {
-      res.json({success: true, msg: 'Welcome in the member area ' + db_name + '!'});
-    }
-    else
-    {
-      return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
-    }
-  } 
-  else 
-  {
-    return res.status(403).send({success: false, msg: 'No token provided.'});
-  }
-});
-*/
-
-/*
-apiRoutes.get('/memberinfo', passport.authenticate('jwt', { session: false}), function(req, res) {
-  var token = getToken(req.headers);
-  if (token) {
-    var decoded = jwt.decode(token, config.secret);
-    User.findOne({
-      name: decoded.name
-    }, function(err, user) {
-        if (err) throw err;
- 
-        if (!user) {
-          return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
-        } else {
-          res.json({success: true, msg: 'Welcome in the member area ' + user.name + '!'});
-        }
-    });
-  } else {
-    return res.status(403).send({success: false, msg: 'No token provided.'});
-  }
-});
-
-*/
  
 getToken = function (headers) {
   if (headers && headers.authorization) {
