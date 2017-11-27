@@ -2,6 +2,21 @@ var bcrypt = require('bcrypt');
 var db = require('../model/databaseAPI');
 var jwt = require('jwt-simple');
 
+// Dummy User
+dummy_user_name = "Hans";
+dummy_user_passwort = "Wurst";
+dummy_user_token = "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.MA.b8XGZfo0xMRp_dwU640jBAVYRL47ul-qXS3CEestCsM";
+// Füge DummyUser in DB ein
+function insertDummyUser(){
+    bcrypt.hash(dummy_user_passwort, 10, function (err, hash) {
+        if (err) {
+            console.log(err);
+        }            
+        db.create(dummy_user_name,hash);  
+    });  
+}
+
+
 // Login/Register
 
 function register(req,res){
@@ -12,7 +27,7 @@ function register(req,res){
         var name = req.body.name;
         var password = req.body.password;
 
-        if(db.findUser(name) == null){        
+        if(db.findUserByName(name) == null){        
             bcrypt.hash(password, 10, function (err, hash) {
                 if (err) {
                     console.log(err);
@@ -32,16 +47,19 @@ function login(req,res){
     var name = req.body.name;
     var password = req.body.password;
 
-    var user = db.findUser(name);
+    var user = db.findUserByName(name);
 
     if(user != null){
         
         compare(password,user.password, function (err, isMatch) {
           
             if (isMatch && !err) {
-            
-            var token = jwt.encode(name, secret_token);
-            db.insertToken(name,token);            
+            var token = jwt.encode(user.id, secret_token);
+            try{
+                // Damit kein Doppeleintrag in der Database entsteht            
+                db.insertToken(user,token);                                        
+            }
+            catch(ex){}
             res.json({success: true, msg: 'JWT ' + token});
           
         } else {            
@@ -60,21 +78,25 @@ function getMemberInfo(req,res){
 
     var token = getToken(req.headers);
     if (token) {
-      var decoded = jwt.decode(token, secret_token);
-      var user_name = decoded;
-  
-      if(user_name == db_name)
+      var decoded = parseInt(jwt.decode(token, secret_token));  
+      try{      
+        var user = db.findUserById(decoded); 
+      }
+      catch(ex){
+        res.json({success: false, msg: 'Authentication failed. User not found.'});
+      }     
+      if(user != undefined)
       {
-        res.json({success: true, msg: 'Welcome in the member area ' + db_name + '!'});
+        res.json({success: true, msg: 'Welcome in the member area ' + user.name + '!'});
       }
       else
       {
-        return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+        res.json({success: false, msg: 'Authentication failed. User not found.'});
       }
     } 
     else 
     {
-      return res.status(403).send({success: false, msg: 'No token provided.'});
+      res.json({success: false, msg: 'No token provided.'});
     }
 
 }
@@ -107,3 +129,4 @@ module.exports.register = register;
 module.exports.compare = compare;
 module.exports.login = login;
 module.exports.getMemberInfo = getMemberInfo;
+module.exports.insertDummyUser = insertDummyUser;

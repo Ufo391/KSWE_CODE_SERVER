@@ -1,37 +1,59 @@
 var fs = require("fs");
 
-db_name = "Hans";
-db_password = "$2a$10$auDYyx1oUSkSVRRtZg.3Y.l252pbawB5PAmabALRRsKskFGeojU/S";
 secret_token = "SUPERDUPERGEHEIM";
-db_token = "";
 
-database = [];
+// Database
+var table_users = [];
+var table_tokens = [];
 
+function contains(a, obj) {
+    var i = a.length;
+    while (i--) {
+       if (a[i] === obj) {
+           return true;
+       }
+    }
+    return false;
+}
 
 module.exports.create = function (name,password){
         
     var obj = new Object();
     obj.name = name;
     obj.password = password;
+    obj.id = table_users.length;
     var str_json = JSON.stringify(obj);
 
-    database.push(str_json);
-    console.log("Inserted: " + database[0]);
+    table_users.push(str_json);
 }
 
-module.exports.insertToken = function(name,token){
-    db_token = token;
+module.exports.insertToken = function(user,token){
+
+    var obj = new Object();
+    obj.id_user = user.id;
+    obj.token = token;
+    var str_json = JSON.stringify(obj);
+
+    if(contains(table_tokens,str_json) == false){
+        table_tokens.push(str_json);
+    }
+    else{
+        throw "You are already logged in.";
+    }    
 }
 
-module.exports.findUser = function(name){
+module.exports.findUserById = function(id){ 
+        return JSON.parse(table_users[id]);
+}
 
-    for (i in database) {
-        var user = JSON.parse(database[i]);
-        if(name == user.name){
+module.exports.findUserByName = function(name){
+
+    for (i in table_users) {
+        var user = JSON.parse(table_users[i]);
+        if(name.toLowerCase() == user.name.toLowerCase()){
             return user;
         }
     } 
 
     return null;
-
 }
