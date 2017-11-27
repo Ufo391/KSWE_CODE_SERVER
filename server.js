@@ -7,12 +7,9 @@ var url = require('url');
 var url_parts = url.parse('/login', true);
 var query = url_parts.query;
 
-var db = require('./app/model/databaseAPI');
-
 var bodyParser  = require('body-parser');
 var morgan      = require('morgan');
 var User        = require('./app/model/user'); // get the mongoose model
-var jwt         = require('jwt-simple');
 
 // instances
 var app = express();
@@ -43,24 +40,14 @@ var server = app.listen(server_port, function () {
   console.log("Server listening at Port %s", port)
   ip.showServerIP();
 
-  //debug();
+  User.insertDummyUser();
 
 })
 
 // routes
 
-function debug(){
-
-}
-
-function debug_db(res){
-  var str = "Name: " + db_name + " | Passwort: " + db_password;
-  console.log(str);
-  res.send(str);
-}
-
 app.get('/debug',function(req,res){
-  debug_db(res);
+  res.json({dummy_name: dummy_user_name, dummy_pw: dummy_user_passwort, dummy_token: dummy_user_token});
 })
 
 // Erstelle neuen Benutzer (POST http://localhost:8080/api/signup)
