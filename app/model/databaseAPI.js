@@ -50,7 +50,7 @@ module.exports.findUserByName = function(name){
 
     for (i in table_users) {
         var user = JSON.parse(table_users[i]);
-        if(name == user.name){
+        if(name.toLowerCase() == user.name.toLowerCase()){
             return user;
         }
     } 
