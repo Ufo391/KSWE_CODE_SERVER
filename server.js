@@ -14,7 +14,6 @@ var morgan      = require('morgan');
 var User        = require('./app/model/user'); // get the mongoose model
 var jwt         = require('jwt-simple');
 
-
 // instances
 var app = express();
 
@@ -64,17 +63,10 @@ app.get('/debug',function(req,res){
   debug_db(res);
 })
 
-app.get('/debug1',function(req,res){  
-  res.send("");
-})
-
-// User registrieren
-
 // Erstelle neuen Benutzer (POST http://localhost:8080/api/signup)
 apiRoutes.post('/signup', function(req, res) {
   User.register(req,res);
  });
-
 
 // route to authenticate a user (POST http://localhost:8080/api/authenticate)
 apiRoutes.post('/authenticate', function(req, res) {
@@ -83,36 +75,5 @@ apiRoutes.post('/authenticate', function(req, res) {
 
 // route to a restricted info (GET http://localhost:8080/api/memberinfo)
 apiRoutes.get('/memberinfo', function(req, res) {  
-
-  var token = getToken(req.headers);
-  if (token) {
-    var decoded = jwt.decode(token, secret_token);
-    var user_name = decoded;
-
-    if(user_name == db_name)
-    {
-      res.json({success: true, msg: 'Welcome in the member area ' + db_name + '!'});
-    }
-    else
-    {
-      return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
-    }
-  } 
-  else 
-  {
-    return res.status(403).send({success: false, msg: 'No token provided.'});
-  }
+  User.getMemberInfo(req,res);
 });
- 
-getToken = function (headers) {
-  if (headers && headers.authorization) {
-    var parted = headers.authorization.split(' ');
-    if (parted.length === 2) {
-      return parted[1];
-    } else {
-      return null;
-    }
-  } else {
-    return null;
-  }
-};

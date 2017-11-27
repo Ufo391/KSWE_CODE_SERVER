@@ -56,7 +56,26 @@ function login(req,res){
 
 }
 
-function getMemberInfo(){
+function getMemberInfo(req,res){
+
+    var token = getToken(req.headers);
+    if (token) {
+      var decoded = jwt.decode(token, secret_token);
+      var user_name = decoded;
+  
+      if(user_name == db_name)
+      {
+        res.json({success: true, msg: 'Welcome in the member area ' + db_name + '!'});
+      }
+      else
+      {
+        return res.status(403).send({success: false, msg: 'Authentication failed. User not found.'});
+      }
+    } 
+    else 
+    {
+      return res.status(403).send({success: false, msg: 'No token provided.'});
+    }
 
 }
 
@@ -71,6 +90,20 @@ function compare(input,hash, cb) {
     });
 };
 
+getToken = function (headers) {
+    if (headers && headers.authorization) {
+      var parted = headers.authorization.split(' ');
+      if (parted.length === 2) {
+        return parted[1];
+      } else {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  };
+
 module.exports.register = register;
 module.exports.compare = compare;
 module.exports.login = login;
+module.exports.getMemberInfo = getMemberInfo;
