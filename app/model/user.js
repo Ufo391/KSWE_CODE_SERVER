@@ -1,29 +1,36 @@
 var bcrypt = require('bcrypt');
 var db = require('../model/databaseAPI');
-
+var jwt = require('jwt-simple');
 
 // Login/Register
 
-function register(name,password){
-   
-    var result_flag = true;
+function register(req,res){
 
-    if(db.findUser(name) == null){        
-        bcrypt.hash(password, 10, function (err, hash) {
-            if (err) {
-                console.log(err);
-            }            
-            db.create(name,hash);            
-        });  
-    }
-    else{
-        result_flag = false;
-    }
+    if (!req.body.name || !req.body.password) { res.json({success: false, msg: 'Please pass Name and Password.'});} 
+    else 
+    {       
+        var name = req.body.name;
+        var password = req.body.password;
 
-    return result_flag;           
+        if(db.findUser(name) == null){        
+            bcrypt.hash(password, 10, function (err, hash) {
+                if (err) {
+                    console.log(err);
+                }            
+                db.create(name,hash);  
+                res.json({success: true, msg: 'User created.'});
+            });  
+        }
+        else{
+            res.json({success: false, msg: 'Name is assigned.'});
+        }                                           
+    }
 }
 
-function login(name, password){
+function login(req,res){
+
+    var name = req.body.name;
+    var password = req.body.password;
 
     var user = db.findUser(name);
 
@@ -34,19 +41,17 @@ function login(name, password){
             if (isMatch && !err) {
             
             var token = jwt.encode(name, secret_token);
-            db.insertToken(name,token);
-            return json({success: true, msg: 'JWT ' + token});
+            db.insertToken(name,token);            
+            res.json({success: true, msg: 'JWT ' + token});
           
         } else {            
-            return json({success: false, msg: 'Authentication failed. Wrong password.'});
+            res.json({success: false, msg: 'Authentication failed. Wrong password.'});
           
         }
         });
     }
-    else{
-        
-        return json({success: false, msg: 'User not found.'});
-      
+    else{        
+        res.json({success: false, msg: 'User not found.'});      
     }  
 
 }

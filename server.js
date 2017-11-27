@@ -72,39 +72,13 @@ app.get('/debug1',function(req,res){
 
 // Erstelle neuen Benutzer (POST http://localhost:8080/api/signup)
 apiRoutes.post('/signup', function(req, res) {
-  if (!req.body.name || !req.body.password) { res.json({success: false, msg: 'Please pass Name and Password.'});} 
-  else 
-  {           
-    if(User.register(req.body.name,req.body.password) == true){
-      res.json({success: true, msg: 'User created.'});
-    }
-    else{
-      res.json({success: false, msg: 'Name is assigned.'});
-    }    
-  }
+  User.register(req,res);
  });
 
 
 // route to authenticate a user (POST http://localhost:8080/api/authenticate)
 apiRoutes.post('/authenticate', function(req, res) {
-
-  res.json(User.login(name,password));
-
-  if(req.body.name == db_name){
-    // check if password matches
-    User.compare(req.body.password,db_password, function (err, isMatch) {
-      if (isMatch && !err) {
-        var token = jwt.encode(db_name, secret_token);
-
-        db_token = token;
-        res.json({success: true, msg: 'JWT ' + token});
-      } else {
-        res.send({success: false, msg: 'Authentication failed. Wrong password.'});
-      }
-    });
-  }else{
-    res.send({success: false, msg: 'User not found.'});
-  }  
+  User.login(req,res);
 });
 
 // route to a restricted info (GET http://localhost:8080/api/memberinfo)
