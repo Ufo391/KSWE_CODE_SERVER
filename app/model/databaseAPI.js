@@ -1,4 +1,5 @@
 var fs = require("fs");
+var mysql = require("mysql");
 
 secret_token = "SUPERDUPERGEHEIM";
 
@@ -56,4 +57,24 @@ module.exports.findUserByName = function(name){
     } 
 
     return null;
+}
+
+module.exports.test = function(){
+    
+    var con = mysql.createConnection({
+        host: "localhost",
+        user: "root",
+        password: "starduell123",
+        database: "starduell"
+      });
+      
+      con.connect(function(err) {
+        if (err) throw err;
+        console.log("Connected!");
+        
+        con.query("SELECT * FROM Person", function (err, result, fields) {
+            if (err) throw err;
+            console.log(result);
+          });
+      });
 }
