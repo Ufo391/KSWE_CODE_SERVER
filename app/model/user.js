@@ -18,7 +18,7 @@ function register(req,res){
                 if (err) {
                     console.log(err);
                 }            
-                db.create(name,hash,email,response,res);  
+                db.createUser(name,hash,email,response,res);  
             });  
         }
         else{
@@ -118,4 +118,3 @@ module.exports.register = register;
 module.exports.compare = compare;
 module.exports.login = login;
 module.exports.getMemberInfo = getMemberInfo;
-module.exports.insertDummyUser = insertDummyUser;

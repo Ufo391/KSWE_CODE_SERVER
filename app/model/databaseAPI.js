@@ -25,14 +25,20 @@ function contains(a, obj) {
     return false;
 }
 
-module.exports.create = function (name,password,email,response, res){
+module.exports.createUser = function (name,password,email,response, res){
+
+    createUserQuery();
+    
+}
+
+function createUserQuery(){
 
     query("insert into Person values ('" + name + "','" + password + "','" + email + "', 0);",function(result){
         
         response(true,"User created.",res);
         
     });
-    
+
 }
 
 module.exports.insertToken = function(user,token){
@@ -51,8 +57,7 @@ module.exports.insertToken = function(user,token){
 }
 
 module.exports.findUserByName = function(name){
-
-    return null;
+        
 }
 
 function query(command,callback){
