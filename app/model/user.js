@@ -13,17 +13,20 @@ function register(req,res){
         var password = req.body.password;
         var email = req.body.email;
 
-        if(db.findUserByName(name) == null){        
-            bcrypt.hash(password, 10, function (err, hash) {
-                if (err) {
-                    console.log(err);
-                }            
-                db.createUser(name,hash,email,response,res);  
-            });  
-        }
-        else{
-            res.json({success: false, msg: 'Name is assigned.'});
-        }                                           
+        db.findUserByName(name,function(result){
+
+            if(JSON.stringify(result.length) == 0){
+                bcrypt.hash(password, 10, function (err, hash) {
+                    if (err) {
+                        console.log(err);
+                    }            
+                    db.createUser(name,hash,email,response,res);  
+                });  
+            }
+            else{
+                res.json({success: false, msg: 'Name is assigned.'});
+            }
+        });                                          
     }
 }
 

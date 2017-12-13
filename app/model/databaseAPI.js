@@ -27,18 +27,12 @@ function contains(a, obj) {
 
 module.exports.createUser = function (name,password,email,response, res){
 
-    createUserQuery();
-    
-}
-
-function createUserQuery(){
-
     query("insert into Person values ('" + name + "','" + password + "','" + email + "', 0);",function(result){
         
         response(true,"User created.",res);
         
     });
-
+    
 }
 
 module.exports.insertToken = function(user,token){
@@ -56,8 +50,8 @@ module.exports.insertToken = function(user,token){
     }    
 }
 
-module.exports.findUserByName = function(name){
-        
+module.exports.findUserByName = function(name, callback){
+        query("select * from Person where username = '" + name + "';",callback);
 }
 
 function query(command,callback){
