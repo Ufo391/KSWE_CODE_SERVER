@@ -2,21 +2,6 @@ var bcrypt = require('bcrypt');
 var db = require('../model/databaseAPI');
 var jwt = require('jwt-simple');
 
-// Dummy User
-dummy_user_name = "Hans";
-dummy_user_passwort = "Wurst";
-dummy_user_token = "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.MA.b8XGZfo0xMRp_dwU640jBAVYRL47ul-qXS3CEestCsM";
-// Füge DummyUser in DB ein
-function insertDummyUser(){
-    bcrypt.hash(dummy_user_passwort, 10, function (err, hash) {
-        if (err) {
-            console.log(err);
-        }            
-        db.create(dummy_user_name,hash);  
-    });  
-}
-
-
 // Login/Register
 
 function register(req,res){
@@ -26,14 +11,14 @@ function register(req,res){
     {       
         var name = req.body.name;
         var password = req.body.password;
+        var email = req.body.email;
 
         if(db.findUserByName(name) == null){        
             bcrypt.hash(password, 10, function (err, hash) {
                 if (err) {
                     console.log(err);
                 }            
-                db.create(name,hash);  
-                res.json({success: true, msg: 'User created.'});
+                db.create(name,hash,email,response,res);  
             });  
         }
         else{
@@ -99,6 +84,10 @@ function getMemberInfo(req,res){
       res.json({success: false, msg: 'No token provided.'});
     }
 
+}
+
+function response(flag_result,message, resp){
+    resp.json({success: flag_result, msg: message});
 }
 
 // Security

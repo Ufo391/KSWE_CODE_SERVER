@@ -44,10 +44,6 @@ var server = app.listen(server_port, function () {
   console.log("Server listening at Port %s", port)
   ip.showServerIP();
 
-  db.test();
-
-  //User.insertDummyUser();
-
 })
 
 // routes
