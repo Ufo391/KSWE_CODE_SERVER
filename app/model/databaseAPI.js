@@ -1,6 +1,15 @@
 var fs = require("fs");
+var mysql = require("mysql");
 
 secret_token = "SUPERDUPERGEHEIM";
+
+// Connection
+var connection_info = {
+    host: "localhost",
+    user: "root",
+    password: "starduell123",
+    database: "starduell"
+  };
 
 // Database
 var table_users = [];
@@ -16,15 +25,14 @@ function contains(a, obj) {
     return false;
 }
 
-module.exports.create = function (name,password){
-        
-    var obj = new Object();
-    obj.name = name;
-    obj.password = password;
-    obj.id = table_users.length;
-    var str_json = JSON.stringify(obj);
+module.exports.createUser = function (name,password,email,response, res){
 
-    table_users.push(str_json);
+    query("insert into Person values ('" + name + "','" + password + "','" + email + "', 0);",function(result){
+        
+        response(true,"User created.",res);
+        
+    });
+    
 }
 
 module.exports.insertToken = function(user,token){
@@ -42,18 +50,25 @@ module.exports.insertToken = function(user,token){
     }    
 }
 
-module.exports.findUserById = function(id){ 
-        return JSON.parse(table_users[id]);
+module.exports.findUserByName = function(name, callback){
+        query("select * from Person where username = '" + name + "';",callback);
 }
 
-module.exports.findUserByName = function(name){
-
-    for (i in table_users) {
-        var user = JSON.parse(table_users[i]);
-        if(name.toLowerCase() == user.name.toLowerCase()){
-            return user;
-        }
-    } 
-
-    return null;
+function query(command,callback){
+    
+    var con = mysql.createConnection(connection_info);
+            
+    con.connect(function(err) {
+        if (err) throw err;
+        console.log("Connected!");
+        
+        con.query(command, function (err, result, fields) {
+            if (err){
+                con.end();
+                throw err;
+            } 
+            callback(result);
+            con.end();
+        });
+    });
 }

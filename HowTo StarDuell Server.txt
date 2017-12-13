@@ -1,0 +1,23 @@
+Virtuelle Maschine in VM-Ware von NAT auf Bridged stellen.
+
+Smartphone auf Hotspot stellen mobiles Internet deaktivieren.
+
+Mit Laptop auf der die Server-VM läuft ausserhalb der VM (Host OS) mit WLAN verbinden.
+
+VM Starten. (passwort:starduell123)
+
+Beidseitig pingen (schlägt meistens bei VM --> Host fehl.. Host Firewall abstellen und nochmal versuchen. Sofern immer noch nix geht, IP und Netzwerkadapter prüfen!)
+
+in der VM KSWE_SERVER von GITHUB pullen
+
+in master Branch wechseln
+
+den Ordner mit dem Terminal öffnen
+	>sudo npm install
+	>npm start
+
+IP und Port werden im Terminal angezeigt
+
+REST Routen:
+
+	

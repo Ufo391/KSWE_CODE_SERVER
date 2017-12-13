@@ -1,3 +1,5 @@
+//import { Db } from '../../.cache/typescript/2.6/node_modules/@types/mongodb';
+
 // dependencies
 var express = require('express');
 
@@ -10,6 +12,8 @@ var query = url_parts.query;
 var bodyParser  = require('body-parser');
 var morgan      = require('morgan');
 var User        = require('./app/model/user'); // get the mongoose model
+
+var db = require('./app/model/databaseAPI');
 
 // instances
 var app = express();
@@ -39,8 +43,6 @@ var server = app.listen(server_port, function () {
 
   console.log("Server listening at Port %s", port)
   ip.showServerIP();
-
-  User.insertDummyUser();
 
 })
 
