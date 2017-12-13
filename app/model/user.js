@@ -35,31 +35,27 @@ function login(req,res){
     var name = req.body.name;
     var password = req.body.password;
 
-    var user = db.findUserByName(name);
+    db.findUserByName(name,function(result){
 
-    if(user != null){
-        
-        compare(password,user.password, function (err, isMatch) {
-          
-            if (isMatch && !err) {
-            var token = jwt.encode(user.id, secret_token);
-            try{
-                // Damit kein Doppeleintrag in der Database entsteht            
-                db.insertToken(user,token);                                        
-            }
-            catch(ex){}
-            res.json({success: true, msg: 'JWT ' + token});
-          
-        } else {            
-            res.json({success: false, msg: 'Authentication failed. Wrong password.'});
-          
+        if(result.length == 1){
+
+            var user = db.qResultToJSON(result);
+
+            compare(password,user.password, function (err, isMatch) {
+                
+                if (isMatch && !err) {
+                var token = jwt.encode(user.username, secret_token);
+                res.json({success: true, msg: 'JWT ' + token});                
+                } else {            
+                  res.json({success: false, msg: 'Authentication failed. Wrong password.'});                
+                }
+            });                         
         }
-        });
-    }
-    else{        
-        res.json({success: false, msg: 'User not found.'});      
-    }  
+        else{
+            res.json({success: false, msg: 'User not found.'});   
+        }
 
+    });
 }
 
 function getMemberInfo(req,res){

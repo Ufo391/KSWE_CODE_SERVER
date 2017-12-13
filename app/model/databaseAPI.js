@@ -72,3 +72,7 @@ function query(command,callback){
         });
     });
 }
+
+module.exports.qResultToJSON = function(q_result){
+    return JSON.parse(JSON.stringify(q_result[0]));
+}
