@@ -1,81 +1,40 @@
-var ftpd = require('ftpd');
-var fs = require('fs');
-var path = require('path');
-var keyFile;
-var certFile;
-var server;
-var options = {
-  host: process.env.IP || '127.0.0.1',
-  port: process.env.PORT || 7002,
-  tls: null,
-};
+/*
+  Aman Kharbanda
+  Subscribe my channel for more videos
+  https://goo.gl/H91NRo
+  Thanks!
+*/
 
-if (process.env.KEY_FILE && process.env.CERT_FILE) {
-  console.log('Running as FTPS server');
-  if (process.env.KEY_FILE.charAt(0) !== '/') {
-    keyFile = path.join(__dirname, process.env.KEY_FILE);
+const express = require('express');
+var app = express();
+var upload = require('express-fileupload');
+const http = require('http');
+http.Server(app).listen(3000); // make server listen on port 80
+
+app.use(upload()); // configure middleware
+
+console.log("Server Started at port 3000");
+
+app.post('/upload',function(req,res){ 
+  console.log(req.files);
+  if(req.files.upfile){
+    var file = req.files.upfile,
+      name = file.name,
+      type = file.mimetype;
+    var uploadpath = __dirname + '/uploads/' + name;
+    file.mv(uploadpath,function(err){
+      if(err){
+        console.log("File Upload Failed",name,err);
+        res.send("Error Occured!")
+      }
+      else {
+        console.log("File Uploaded",name);
+        res.send('Done! Uploading files')
+      }
+    });
   }
-  if (process.env.CERT_FILE.charAt(0) !== '/') {
-    certFile = path.join(__dirname, process.env.CERT_FILE);
-  }
-  options.tls = {
-    key: fs.readFileSync(keyFile),
-    cert: fs.readFileSync(certFile),
-    ca: !process.env.CA_FILES ? null : process.env.CA_FILES
-      .split(':')
-      .map(function(f) {
-        return fs.readFileSync(f);
-      }),
+  else {
+    res.send("No File selected !");
+    res.end();
   };
-} else {
-  console.log();
-  console.log('*** To run as FTPS server,                 ***');
-  console.log('***  set "KEY_FILE", "CERT_FILE"           ***');
-  console.log('***  and (optionally) "CA_FILES" env vars. ***');
-  console.log();
-}
-
-server = new ftpd.FtpServer(options.host, {
-  getInitialCwd: function() {
-    return '/';
-  },
-  getRoot: function() {
-    return process.cwd();
-  },
-  pasvPortRangeStart: 1025,
-  pasvPortRangeEnd: 1050,
-  tlsOptions: options.tls,
-  allowUnauthorizedTls: true,
-  useWriteFile: false,
-  useReadFile: false,
-  uploadMaxSlurpSize: 7000, // N/A unless 'useWriteFile' is true.
-});
-
-server.on('error', function(error) {
-  console.log('FTP Server error:', error);
-});
-
-server.on('client:connected', function(connection) {
-  var username = null;
-  console.log('client connected: ' + connection.remoteAddress);
-  connection.on('command:user', function(user, success, failure) {
-    if (user) {
-      username = user;
-      success();
-    } else {
-      failure();
-    }
-  });
-
-  connection.on('command:pass', function(pass, success, failure) {
-    if (pass) {
-      success(username);
-    } else {
-      failure();
-    }
-  });
-});
-
-server.debugging = 4;
-server.listen(options.port);
-console.log('Listening on port ' + options.port);
+})
