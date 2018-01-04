@@ -1,5 +1,3 @@
-//import { Db } from '../../.cache/typescript/2.6/node_modules/@types/mongodb';
-
 // dependencies
 var express = require('express');
 var upload = require('express-fileupload');
@@ -58,7 +56,7 @@ app.get('/debug',function(req,res){
   res.json({dummy_name: dummy_user_name, dummy_pw: dummy_user_passwort, dummy_token: dummy_user_token});
 })
 
-app.post('/upload', function(req,res){
+app.post('/upload-content', function(req,res){
   fileT.recive(req,res);
 })
 
