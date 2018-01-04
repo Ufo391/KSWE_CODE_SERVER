@@ -6,7 +6,7 @@ var jwt = require('jwt-simple');
 
 function register(req,res){
 
-    if (!req.body.name || !req.body.password) { res.json({success: false, msg: 'Please pass Name and Password.'});} 
+    if (!req.body.name || !req.body.password || ! req.body.email) { res.json({success: false, msg: 'Please pass Name, Password and EMail.'});} 
     else 
     {       
         var name = req.body.name;
@@ -44,7 +44,10 @@ function login(req,res){
             compare(password,user.password, function (err, isMatch) {
                 
                 if (isMatch && !err) {
-                var token = jwt.encode(user.username, secret_token);
+                var token = jwt.encode({
+                    username: name,
+                    time: new Date().toISOString()
+                }, secret_token);                
                 res.json({success: true, msg: 'JWT ' + token});                
                 } else {            
                   res.json({success: false, msg: 'Authentication failed. Wrong password.'});                
@@ -61,28 +64,25 @@ function login(req,res){
 function getMemberInfo(req,res){
 
     var token = getToken(req.headers);
+    
     if (token) {
-      var decoded = parseInt(jwt.decode(token, secret_token));  
-      try{      
-        var user = db.findUserById(decoded); 
-      }
-      catch(ex){
-        res.json({success: false, msg: 'Authentication failed. User not found.'});
-      }     
-      if(user != undefined)
-      {
-        res.json({success: true, msg: 'Welcome in the member area ' + user.name + '!'});
-      }
-      else
-      {
-        res.json({success: false, msg: 'Authentication failed. User not found.'});
-      }
+      var decoded_token = jwt.decode(token, secret_token);
+      db.findUserByName(decoded_token.username,function(result){
+        if(result.length > 0)
+        {
+            var user = db.qResultToJSON(result);
+            res.json({success: true, msg: 'Welcome: ' + user.username + " with E-Mail: " + user.email});
+        }
+        else
+        {
+            res.json({success: false, msg: 'unexpected token'});
+        }
+      });
     } 
     else 
     {
       res.json({success: false, msg: 'No token provided.'});
     }
-
 }
 
 function response(flag_result,message, resp){
