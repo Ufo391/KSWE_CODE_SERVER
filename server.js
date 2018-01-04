@@ -2,6 +2,7 @@
 
 // dependencies
 var express = require('express');
+var upload = require('express-fileupload');
 
 var ip = require('./app/util/ip')
 
@@ -15,6 +16,8 @@ var User        = require('./app/model/user'); // get the mongoose model
 
 var db = require('./app/model/databaseAPI');
 
+var fileT = require('./app/util/filetransfer');
+
 // instances
 var app = express();
 
@@ -27,6 +30,9 @@ app.use(bodyParser.json());
 
 // log to console
 app.use(morgan('dev'));
+
+// upload
+app.use(upload());
 
 // bundle our routes
 var apiRoutes = express.Router();
@@ -50,6 +56,10 @@ var server = app.listen(server_port, function () {
 
 app.get('/debug',function(req,res){
   res.json({dummy_name: dummy_user_name, dummy_pw: dummy_user_passwort, dummy_token: dummy_user_token});
+})
+
+app.post('/upload', function(req,res){
+  fileT.recive(req,res);
 })
 
 // Erstelle neuen Benutzer (POST http://localhost:8080/api/signup)
