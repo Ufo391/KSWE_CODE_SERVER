@@ -6,7 +6,7 @@ var jwt = require('jwt-simple');
 
 function register(req,res){
 
-    if (!req.body.name || !req.body.password || ! req.body.email) { res.json({success: false, msg: 'Please pass Name, Password and EMail.'});} 
+    if (!req.body.name || !req.body.password ) { res.json({success: false, msg: 'Please pass Name, Password and EMail.'});} 
     else 
     {       
         var name = req.body.name;

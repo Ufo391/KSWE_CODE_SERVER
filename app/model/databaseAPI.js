@@ -27,7 +27,15 @@ function contains(a, obj) {
 
 module.exports.createUser = function (name,password,email,response, res){
 
-    query("insert into Person values ('" + name + "','" + password + "','" + email + "', 0);",function(result){
+    var _query = "";
+    if(email === undefined){
+        _query = "insert into Person values ('" + name + "','" + password + "','NULL', 0);";
+    }
+    else{
+        _query = "insert into Person values ('" + name + "','" + password + "','" + _email + "', 0);";
+    }
+
+    query(_query,function(result){
         
         response(true,"User created.",res);
         

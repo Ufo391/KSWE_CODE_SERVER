@@ -31,10 +31,9 @@ module.exports.recive = function(req,res)
 
 // Sende zum Client geforderte Datei
 module.exports.send = function(req,res)
-{
-  console.log(req.headers.filename);
-  if(req.body.filename){
-    var file = video_location + '/' + req.filename;
+{  
+  if(req.headers.filename){
+    var file = video_location + '/' + req.headers.filename;
     res.download(file,function(err){
       if (err) {
         console.log('Download_Error: ' + err);
