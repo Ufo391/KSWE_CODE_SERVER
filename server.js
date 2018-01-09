@@ -14,8 +14,8 @@ var User        = require('./app/model/user'); // get the mongoose model
 
 var db = require('./app/model/databaseAPI');
 
-var fileT = require('./app/util/filetransfer');
-var tokenHandler = require('./app/util/tokenHandler');
+var fileT = require('./app/com/filetransfer');
+var tokenHandler = require('./app/security/tokenHandler');
 
 // instances
 var app = express();
@@ -54,16 +54,17 @@ var server = app.listen(server_port, function () {
 // routes
 
 app.get('/debug',function(req,res){
-  console.log(tokenHandler(req,res));
   res.json({success: true});
 })
 
 app.post('/upload-video', function(req,res){
-  fileT.recive(req,res);
+  tokenHandler(req,res,fileT.recive);
+  //fileT.recive(req,res);
 })
 
 app.post('/download-video', function(req,res){
-  fileT.send(req,res);
+  tokenHandler(req,res,fileT.send);
+  //fileT.send(req,res);
 })
 
 // Erstelle neuen Benutzer (POST http://localhost:8080/api/signup)
@@ -72,11 +73,11 @@ apiRoutes.post('/signup', function(req, res) {
  });
 
 // route to authenticate a user (POST http://localhost:8080/api/authenticate)
-apiRoutes.post('/authenticate', function(req, res) {
+apiRoutes.post('/authenticate', function(req, res) {  
   User.login(req,res);
 });
 
 // route to a restricted info (GET http://localhost:8080/api/memberinfo)
-apiRoutes.get('/memberinfo', function(req, res) {  
-  User.getMemberInfo(req,res);
+apiRoutes.get('/memberinfo', function(req, res) { 
+  tokenHandler(req,res,User.getMemberInfo);   
 });

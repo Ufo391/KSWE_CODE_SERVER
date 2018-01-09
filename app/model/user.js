@@ -61,28 +61,19 @@ function login(req,res){
     });
 }
 
-function getMemberInfo(req,res){
-
-    var token = getToken(req.headers);
+function getMemberInfo(req,res,username){
     
-    if (token) {
-      var decoded_token = jwt.decode(token, secret_token);
-      db.findUserByName(decoded_token.username,function(result){
-        if(result.length > 0)
-        {
-            var user = db.qResultToJSON(result);
-            res.json({success: true, msg: 'Welcome: ' + user.username + " with E-Mail: " + user.email});
-        }
-        else
-        {
-            res.json({success: false, msg: 'unexpected token'});
-        }
-      });
-    } 
-    else 
+    db.findUserByName(username,function(result){
+    if(result.length > 0)
     {
-      res.json({success: false, msg: 'No token provided.'});
+        var user = db.qResultToJSON(result);
+        res.json({success: true, msg: 'Welcome: ' + user.username + " with E-Mail: " + user.email});
     }
+    else
+    {
+        res.json({success: false, msg: 'unexpected token'});
+    }
+    });
 }
 
 function response(flag_result,message, resp){
