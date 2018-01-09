@@ -25,15 +25,15 @@ DROP TABLE IF EXISTS `Instrumental`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Instrumental` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(128) NOT NULL,
   `audio_binary_path` varchar(4096) NOT NULL,
-  `duration` datetime NOT NULL,
+  `duration` int(11) NOT NULL,
   `genre_name` varchar(128) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `instrumental_genre_name_idx` (`genre_name`),
   CONSTRAINT `instrumental_genre_name` FOREIGN KEY (`genre_name`) REFERENCES `Genre` (`name`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,6 +42,7 @@ CREATE TABLE `Instrumental` (
 
 LOCK TABLES `Instrumental` WRITE;
 /*!40000 ALTER TABLE `Instrumental` DISABLE KEYS */;
+INSERT INTO `Instrumental` VALUES (2,'Cashmo - 1994 - Instrumental','Cashmo - 1994 - Instrumental.mp3',198,'Deep'),(3,'Cashmo - Asozial - Instrumental','Cashmo - Asozial - Instrumental.mp3',154,'Westcoast'),(4,'Cashmo - Hoez & Broz - Instrumental','Cashmo - Hoez & Broz - Instrumental.mp3',158,'Westcoast');
 /*!40000 ALTER TABLE `Instrumental` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -54,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-09 12:27:02
+-- Dump completed on 2018-01-09 16:04:58

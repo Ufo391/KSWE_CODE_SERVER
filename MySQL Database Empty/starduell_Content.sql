@@ -25,18 +25,18 @@ DROP TABLE IF EXISTS `Content`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Content` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
   `date` datetime NOT NULL,
-  `duration` datetime NOT NULL,
+  `duration` int(11) NOT NULL,
   `video_binary_path` varchar(4096) NOT NULL,
   `views` int(11) NOT NULL,
   `session_id` int(11) NOT NULL,
   `creator_username` varchar(32) NOT NULL,
   `instrumental_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `content_session_id_idx` (`session_id`),
   KEY `content_person_username_idx` (`creator_username`),
   KEY `content_instrumental_id_idx` (`instrumental_id`),
+  KEY `content_session_id_idx` (`session_id`),
   CONSTRAINT `content_instrumental_id` FOREIGN KEY (`instrumental_id`) REFERENCES `Instrumental` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `content_person_username` FOREIGN KEY (`creator_username`) REFERENCES `Person` (`username`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `content_session_id` FOREIGN KEY (`session_id`) REFERENCES `Session` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -61,4 +61,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-09 12:27:02
+-- Dump completed on 2018-01-09 16:04:58

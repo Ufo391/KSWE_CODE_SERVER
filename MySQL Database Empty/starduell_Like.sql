@@ -28,7 +28,7 @@ CREATE TABLE `Like` (
   `creator_username` varchar(32) NOT NULL,
   `content_id` int(11) NOT NULL,
   UNIQUE KEY `creator_username_UNIQUE` (`creator_username`),
-  UNIQUE KEY `content_id_UNIQUE` (`content_id`),
+  KEY `like_content_id_idx` (`content_id`),
   CONSTRAINT `like_content_id` FOREIGN KEY (`content_id`) REFERENCES `Content` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `like_person_username` FOREIGN KEY (`creator_username`) REFERENCES `Person` (`username`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -52,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-09 12:27:02
+-- Dump completed on 2018-01-09 16:04:58
