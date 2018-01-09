@@ -60,7 +60,6 @@ function query(command,callback){
             
     con.connect(function(err) {
         if (err) throw err;
-        console.log("Connected!");
         
         con.query(command, function (err, result, fields) {
             if (err){

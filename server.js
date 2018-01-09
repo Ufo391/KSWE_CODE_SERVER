@@ -56,8 +56,12 @@ app.get('/debug',function(req,res){
   res.json({dummy_name: dummy_user_name, dummy_pw: dummy_user_passwort, dummy_token: dummy_user_token});
 })
 
-app.post('/upload-content', function(req,res){
+app.post('/upload-video', function(req,res){
   fileT.recive(req,res);
+})
+
+app.get('/download-video', function(req,res){
+  fileT.send(req,res);
 })
 
 // Erstelle neuen Benutzer (POST http://localhost:8080/api/signup)
