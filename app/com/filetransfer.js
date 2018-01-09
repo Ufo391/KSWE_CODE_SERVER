@@ -1,7 +1,7 @@
 var path = require('path');
 var fs = require('fs');
 
-var video_location = path.dirname(require.main.filename) + '/uploads/video/';
+var uploads_location = path.dirname(require.main.filename) + '/uploads/';
 
 // Empfange Datei vom Client
 module.exports.recive = function(req,res)
@@ -10,8 +10,8 @@ module.exports.recive = function(req,res)
     var file = req.files.upfile,
       name = file.name,
       type = file.mimetype;
-    var uploadpath = video_location + name;
-    destinationExists(video_location);
+    var uploadpath = uploads_location + '/' + req.headers.mode + '/' + name;
+    destinationExists(uploads_location);
     file.mv(uploadpath,function(err){
       if(err){
         console.log("File Upload Failed",name,err);        
@@ -33,7 +33,7 @@ module.exports.recive = function(req,res)
 module.exports.send = function(req,res)
 {    
   if(req.headers.filename){
-    var file = video_location + '/' + req.headers.filename;
+    var file = uploads_location + '/' + req.headers.mode + '/' + req.headers.filename;
     res.download(file,function(err){
       if (err) {
         console.log('Download_Error: ' + err);
@@ -49,5 +49,7 @@ module.exports.send = function(req,res)
 function destinationExists(path){
   if(fs.existsSync(path) === false){
     fs.mkdirSync(path);
+    fs.mkdirSync(path + '/video');
+    fs.mkdirSync(path + '/audio');
   }
 }

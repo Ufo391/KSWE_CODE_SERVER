@@ -57,7 +57,7 @@ app.get('/debug',function(req,res){
   res.json({success: true});
 })
 
-app.post('/upload-video', function(req,res){
+app.post('/upload', function(req,res){
   tokenHandler(req,res,fileT.recive);
   //fileT.recive(req,res);
 })

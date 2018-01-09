@@ -80,6 +80,19 @@ function response(flag_result,message, resp){
     resp.json({success: flag_result, msg: message});
 }
 
+module.exports.uploadVideo = function(req,res,username){
+
+    var query = "";
+
+}
+
+module.exports.downloadVideo = function(req,res,username){
+
+
+
+
+}
+
 // Security
 
 function compare(input,hash, cb) {
