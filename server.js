@@ -60,7 +60,7 @@ app.post('/upload-video', function(req,res){
   fileT.recive(req,res);
 })
 
-app.get('/download-video', function(req,res){
+app.post('/download-video', function(req,res){
   fileT.send(req,res);
 })
 
