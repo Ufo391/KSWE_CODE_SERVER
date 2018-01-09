@@ -32,7 +32,7 @@ module.exports.createUser = function (name,password,email,response, res){
         _query = "insert into Person values ('" + name + "','" + password + "','NULL', 0);";
     }
     else{
-        _query = "insert into Person values ('" + name + "','" + password + "','" + _email + "', 0);";
+        _query = "insert into Person values ('" + name + "','" + password + "','" + email + "', 0);";
     }
 
     query(_query,function(result){

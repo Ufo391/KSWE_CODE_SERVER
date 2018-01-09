@@ -15,6 +15,7 @@ var User        = require('./app/model/user'); // get the mongoose model
 var db = require('./app/model/databaseAPI');
 
 var fileT = require('./app/util/filetransfer');
+var tokenHandler = require('./app/util/tokenHandler');
 
 // instances
 var app = express();
@@ -53,7 +54,8 @@ var server = app.listen(server_port, function () {
 // routes
 
 app.get('/debug',function(req,res){
-  res.json({dummy_name: dummy_user_name, dummy_pw: dummy_user_passwort, dummy_token: dummy_user_token});
+  console.log(tokenHandler(req,res));
+  res.json({success: true});
 })
 
 app.post('/upload-video', function(req,res){
