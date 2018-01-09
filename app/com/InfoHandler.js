@@ -11,24 +11,43 @@ module.exports = function(req,res){
         return;
     }
 
-    if(mode === 'show'){
+    if(mode === 'show_all'){
 
         if(param === 'genre'){
 
         _query = "SELECT * FROM Genre;";
 
-        }else if(param === 'instrumentals'){
+        }else if(param === 'instrumental'){
 
             _query = "SELECT * FROM Instrumental;";
 
         }else{
-            res.json({success: false, msg: 'unknown parameter!'});
+            res.json({success: false, msg: 'unknown parameter: ' + param});
             return;
         }
 
     }
+    else if(mode === 'show_filtered'){
+
+        var params = param.split(":");
+
+        if(params.length !== 2){
+            res.json({success: false, msg: 'invalid parameter: ' + param});
+            return;
+        }
+
+        if(params[0] === 'instrumental'){
+
+            _query = "SELECT * FROM Instrumental where genre_name = '" + params[1] + "';";            
+
+        }else{
+            res.json({success: false, msg: 'unknown parameter: ' + param});
+            return;
+        }        
+        
+    }
     else{
-        res.json({success: false, msg: 'unknown mode!'});
+        res.json({success: false, msg: 'unknown mode: ' + mode});
         return;
     }
 
