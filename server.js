@@ -16,6 +16,7 @@ var db = require('./app/model/databaseAPI');
 
 var fileT = require('./app/com/filetransfer');
 var tokenHandler = require('./app/security/tokenHandler');
+var infoHandler = require('./app/com/InfoHandler');
 
 // instances
 var app = express();
@@ -67,6 +68,15 @@ app.post('/download-video', function(req,res){
   //fileT.send(req,res);
 })
 
+app.post('/download-audio', function(req,res){
+  tokenHandler(req,res,fileT.send);
+  //fileT.send(req,res);
+})
+
+app.get('/info', function(req,res){
+  tokenHandler(req,res,infoHandler);
+  //fileT.send(req,res);
+})
 // Erstelle neuen Benutzer (POST http://localhost:8080/api/signup)
 apiRoutes.post('/signup', function(req, res) {
   User.register(req,res);

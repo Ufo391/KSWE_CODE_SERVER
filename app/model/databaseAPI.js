@@ -62,7 +62,7 @@ module.exports.findUserByName = function(name, callback){
         query("select * from Person where username = '" + name + "';",callback);
 }
 
-function query(command,callback){
+module.exports.query = function(command,callback){
     
     var con = mysql.createConnection(connection_info);
             
