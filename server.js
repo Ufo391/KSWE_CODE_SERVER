@@ -47,28 +47,29 @@ var server = app.listen(server_port, function () {
 
   initialize();
 
-  console.log("Server listening at Port %s", port)
-  ip.showServerIP();
-
 })
 
 function initialize(){
 
   initFilesDir();
+  
   initAdress();
 
 }
 
 function initFilesDir(){
 
-  var _path = path.dirname(require.main.filename) + '/files/audio/';
-  if(fs.existsSync(_path) === false){
-    fs.mkdir(_path);
-  }
+  createDir('./files');
+  createDir('./files/audio');
+  createDir('./files/video');
 
-  _path = path.dirname(require.main.filename) + '/files/video/';
+}
+
+function createDir(_path){
+
   if(fs.existsSync(_path) === false){
-    fs.mkdir(_path);
+    fs.mkdirSync(_path);
+
   }
 
 }
@@ -78,6 +79,8 @@ function initAdress(){
   var host = server.address().address
   var port = server.address().port
 
+  console.log("Server listening at Port %s", port)
+  ip.showServerIP();
 }
 
 // routes
