@@ -59,15 +59,16 @@ module.exports.insertToken = function(user,token){
 }
 
 module.exports.findUserByName = function(name, callback){
-        query("select * from Person where username = '" + name + "';",callback);
+        var _query = "select * from Person where username = '" + name + "';";        
+        query(_query,callback);
 }
 
-module.exports.query = function(command,callback){
+function query (command,callback){
     
-    var con = mysql.createConnection(connection_info);
-            
+    var con = mysql.createConnection(connection_info);    
+
     con.connect(function(err) {
-        if (err) throw err;
+        if (err) throw err;        
         
         con.query(command, function (err, result, fields) {
             if (err){
@@ -79,6 +80,8 @@ module.exports.query = function(command,callback){
         });
     });
 }
+
+module.exports.query = query;
 
 module.exports.qResultToJSON = function(q_result){
     return JSON.parse(JSON.stringify(q_result[0]));
