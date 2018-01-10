@@ -90,15 +90,11 @@ app.get('/debug',function(req,res){
 })
 
 app.post('/upload', function(req,res){
-  tokenHandler(req,res,fileT.recive);
-})
-
-app.post('/download-video', function(req,res){
-  tokenHandler(req,res,fileT.send_old);
+  tokenHandler(req,res,fileT.fromClient);
 })
 
 app.post('/download', function(req,res){
-  tokenHandler(req,res,fileT.send);
+  tokenHandler(req,res,fileT.toClient);
 })
 
 app.get('/info', function(req,res){
@@ -111,8 +107,4 @@ apiRoutes.post('/signup', function(req, res) {
 
 apiRoutes.post('/authenticate', function(req, res) {  
   User.login(req,res);
-});
-
-apiRoutes.get('/memberinfo', function(req, res) { 
-  tokenHandler(req,res,User.getMemberInfo);   
 });

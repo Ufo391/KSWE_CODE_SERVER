@@ -61,21 +61,6 @@ function login(req,res){
     });
 }
 
-function getMemberInfo(req,res,username){
-    
-    db.findUserByName(username,function(result){
-    if(result.length > 0)
-    {
-        var user = db.qResultToJSON(result);
-        res.json({success: true, msg: 'Welcome: ' + user.username + " with E-Mail: " + user.email});
-    }
-    else
-    {
-        res.json({success: false, msg: 'unexpected token'});
-    }
-    });
-}
-
 function response(flag_result,message, resp){
     resp.json({success: flag_result, msg: message});
 }
@@ -119,4 +104,3 @@ getToken = function (headers) {
 module.exports.register = register;
 module.exports.compare = compare;
 module.exports.login = login;
-module.exports.getMemberInfo = getMemberInfo;
