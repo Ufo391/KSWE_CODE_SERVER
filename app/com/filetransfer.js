@@ -5,7 +5,7 @@ var db = require('../model/databaseAPI');
 var uploads_location = path.dirname(require.main.filename) + '/files/';
 
 // Empfange Datei vom Client
-module.exports.fromClient = function(req,res)
+module.exports.fromClient = function(req,res, username)
 {
 
   if(req.files === undefined){
@@ -28,7 +28,7 @@ module.exports.fromClient = function(req,res)
     else {
       console.log("File Uploaded",name);        
       res.json({success: true, msg: 'Done! Uploading files'});
-      // Datenbank eintrag
+      // Datenbankeintrag generieren
     }
   });
 

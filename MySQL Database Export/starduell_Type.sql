@@ -18,29 +18,27 @@ USE `starduell`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `Person`
+-- Table structure for table `Type`
 --
 
-DROP TABLE IF EXISTS `Person`;
+DROP TABLE IF EXISTS `Type`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `Person` (
-  `username` varchar(32) NOT NULL,
-  `password` varchar(128) NOT NULL,
-  `email` varchar(256) NOT NULL,
-  `rating` float NOT NULL,
-  PRIMARY KEY (`username`)
+CREATE TABLE `Type` (
+  `name` varchar(256) NOT NULL,
+  `description` varchar(4096) DEFAULT NULL,
+  PRIMARY KEY (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `Person`
+-- Dumping data for table `Type`
 --
 
-LOCK TABLES `Person` WRITE;
-/*!40000 ALTER TABLE `Person` DISABLE KEYS */;
-INSERT INTO `Person` VALUES ('Peter','$2a$10$5aoJ6bT5nIiO6pPwnadWnelIzCHSDpX7OOOnR8NCOCbYIx8EuOTh2','peterp@hotmail.de',0);
-/*!40000 ALTER TABLE `Person` ENABLE KEYS */;
+LOCK TABLES `Type` WRITE;
+/*!40000 ALTER TABLE `Type` DISABLE KEYS */;
+INSERT INTO `Type` VALUES ('Collaboration','Performe zusammen mit jemanden und begeistere die Leute!'),('Competition','Fordere jemanden zum Duell herraus und zeige dem Publikum wer der bessere ist!'),('Solo','Zeige den Menschen was in dir steckt!');
+/*!40000 ALTER TABLE `Type` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -52,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-10 16:31:25
+-- Dump completed on 2018-01-10 16:31:26

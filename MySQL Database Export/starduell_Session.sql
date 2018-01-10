@@ -30,11 +30,14 @@ CREATE TABLE `Session` (
   `date` datetime NOT NULL,
   `creator_username` varchar(32) NOT NULL,
   `topic_name` varchar(64) NOT NULL,
+  `type_name` varchar(256) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `session_person_username_idx` (`creator_username`),
   KEY `session_topic_name_idx` (`topic_name`),
+  KEY `session_type_name_idx` (`type_name`),
   CONSTRAINT `session_person_username` FOREIGN KEY (`creator_username`) REFERENCES `Person` (`username`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `session_topic_name` FOREIGN KEY (`topic_name`) REFERENCES `Topic` (`name`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `session_topic_name` FOREIGN KEY (`topic_name`) REFERENCES `Topic` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `session_type_name` FOREIGN KEY (`type_name`) REFERENCES `Type` (`name`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -56,4 +59,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-09 17:06:42
+-- Dump completed on 2018-01-10 16:31:25

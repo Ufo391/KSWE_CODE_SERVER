@@ -21,6 +21,10 @@ module.exports = function(req,res){
 
             _query = "SELECT * FROM Instrumental;";
 
+        }else if(param === 'topic'){
+            
+            _query = "SELECT * FROM Topic;";
+            
         }else{
             res.json({success: false, msg: 'unknown parameter: ' + param});
             return;

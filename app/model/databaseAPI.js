@@ -86,3 +86,20 @@ module.exports.query = query;
 module.exports.qResultToJSON = function(q_result){
     return JSON.parse(JSON.stringify(q_result[0]));
 }
+
+module.exports.createSession = function(req,res,username){
+
+    var topic = req.headers.topic;
+
+    if(topic === undefined){
+        res.json({success: false, msg: 'invalid topic!'});
+        return;
+    }
+
+    
+
+}
+
+module.exports.insertContent = function(username,filepath, name, duration){
+
+}

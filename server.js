@@ -81,10 +81,6 @@ function initAdress(){
 
 // routes
 
-apiRoutes.get('/debug',function(req,res){
-  res.json({success: true});
-})
-
 apiRoutes.post('/upload', function(req,res){
   tokenHandler(req,res,fileT.fromClient);
 })
@@ -95,6 +91,10 @@ apiRoutes.post('/download', function(req,res){
 
 apiRoutes.get('/info', function(req,res){
   tokenHandler(req,res,infoHandler);
+})
+
+apiRoutes.get('/session', function(req,res){
+  tokenHandler(req,res,db.createSession);
 })
 
 apiRoutes.post('/signup', function(req, res) {
