@@ -60,22 +60,18 @@ app.get('/debug',function(req,res){
 
 app.post('/upload', function(req,res){
   tokenHandler(req,res,fileT.recive);
-  //fileT.recive(req,res);
 })
 
 app.post('/download-video', function(req,res){
   tokenHandler(req,res,fileT.send);
-  //fileT.send(req,res);
 })
 
 app.post('/download-audio', function(req,res){
   tokenHandler(req,res,fileT.send);
-  //fileT.send(req,res);
 })
 
 app.get('/info', function(req,res){
   tokenHandler(req,res,infoHandler);
-  //fileT.send(req,res);
 })
 // Erstelle neuen Benutzer (POST http://localhost:8080/api/signup)
 apiRoutes.post('/signup', function(req, res) {

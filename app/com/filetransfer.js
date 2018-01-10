@@ -10,8 +10,9 @@ module.exports.recive = function(req,res)
     var file = req.files.upfile,
       name = file.name,
       type = file.mimetype;
-    var uploadpath = uploads_location + '/' + req.headers.mode + '/' + name;
+    var uploadpath = uploads_location +  req.headers.mode + '/' + name;
     destinationExists(uploads_location);
+    console.log(typeof(file));
     file.mv(uploadpath,function(err){
       if(err){
         console.log("File Upload Failed",name,err);        
