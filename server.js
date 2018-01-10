@@ -10,7 +10,7 @@ var query = url_parts.query;
 
 var bodyParser  = require('body-parser');
 var morgan      = require('morgan');
-var User        = require('./app/model/user'); // get the mongoose model
+var User        = require('./app/model/user');
 
 var db = require('./app/model/databaseAPI');
 
@@ -94,27 +94,25 @@ app.post('/upload', function(req,res){
 })
 
 app.post('/download-video', function(req,res){
-  tokenHandler(req,res,fileT.send);
+  tokenHandler(req,res,fileT.send_old);
 })
 
-app.post('/download-audio', function(req,res){
+app.post('/download', function(req,res){
   tokenHandler(req,res,fileT.send);
 })
 
 app.get('/info', function(req,res){
   tokenHandler(req,res,infoHandler);
 })
-// Erstelle neuen Benutzer (POST http://localhost:8080/api/signup)
+
 apiRoutes.post('/signup', function(req, res) {
   User.register(req,res);
  });
 
-// route to authenticate a user (POST http://localhost:8080/api/authenticate)
 apiRoutes.post('/authenticate', function(req, res) {  
   User.login(req,res);
 });
 
-// route to a restricted info (GET http://localhost:8080/api/memberinfo)
 apiRoutes.get('/memberinfo', function(req, res) { 
   tokenHandler(req,res,User.getMemberInfo);   
 });

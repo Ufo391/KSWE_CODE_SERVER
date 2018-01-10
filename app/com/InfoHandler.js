@@ -11,7 +11,7 @@ module.exports = function(req,res){
         return;
     }
 
-    if(mode === 'show_all'){
+    if(mode === 'show:all'){
 
         if(param === 'genre'){
 
@@ -27,7 +27,7 @@ module.exports = function(req,res){
         }
 
     }
-    else if(mode === 'show_filtered'){
+    else if(mode === 'show:filtered'){
 
         var params = param.split(":");
 
