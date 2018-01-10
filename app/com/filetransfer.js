@@ -1,7 +1,7 @@
 var path = require('path');
 var fs = require('fs');
 
-var uploads_location = path.dirname(require.main.filename) + '/uploads/';
+var uploads_location = path.dirname(require.main.filename) + '/files/';
 
 // Empfange Datei vom Client
 module.exports.recive = function(req,res)
@@ -11,8 +11,6 @@ module.exports.recive = function(req,res)
       name = file.name,
       type = file.mimetype;
     var uploadpath = uploads_location +  req.headers.mode + '/' + name;
-    destinationExists(uploads_location);
-    console.log(typeof(file));
     file.mv(uploadpath,function(err){
       if(err){
         console.log("File Upload Failed",name,err);        
@@ -44,13 +42,5 @@ module.exports.send = function(req,res)
   }
   else{
     res.json({success: false, msg: 'Invalid filename!'});
-  }
-}
-
-function destinationExists(path){
-  if(fs.existsSync(path) === false){
-    fs.mkdirSync(path);
-    fs.mkdirSync(path + '/video');
-    fs.mkdirSync(path + '/audio');
   }
 }

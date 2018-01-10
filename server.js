@@ -17,6 +17,7 @@ var db = require('./app/model/databaseAPI');
 var fileT = require('./app/com/filetransfer');
 var tokenHandler = require('./app/security/tokenHandler');
 var infoHandler = require('./app/com/InfoHandler');
+var fs = require('fs');
 
 // instances
 var app = express();
@@ -44,13 +45,40 @@ app.use('/api', apiRoutes);
 
 var server = app.listen(server_port, function () {
 
-  var host = server.address().address
-  var port = server.address().port
+  initialize();
 
   console.log("Server listening at Port %s", port)
   ip.showServerIP();
 
 })
+
+function initialize(){
+
+  initFilesDir();
+  initAdress();
+
+}
+
+function initFilesDir(){
+
+  var _path = path.dirname(require.main.filename) + '/files/audio/';
+  if(fs.existsSync(_path) === false){
+    fs.mkdir(_path);
+  }
+
+  _path = path.dirname(require.main.filename) + '/files/video/';
+  if(fs.existsSync(_path) === false){
+    fs.mkdir(_path);
+  }
+
+}
+
+function initAdress(){
+
+  var host = server.address().address
+  var port = server.address().port
+
+}
 
 // routes
 
