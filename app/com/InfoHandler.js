@@ -25,6 +25,10 @@ module.exports = function(req,res){
             
             _query = "SELECT * FROM Topic;";
             
+        }else if(param === 'type'){
+            
+            _query = "SELECT * FROM Type;";
+            
         }else{
             res.json({success: false, msg: 'unknown parameter: ' + param});
             return;
