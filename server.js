@@ -4,10 +4,6 @@ var upload = require('express-fileupload');
 
 var ip = require('./app/util/ip')
 
-var url = require('url');
-var url_parts = url.parse('/login', true);
-var query = url_parts.query;
-
 var bodyParser  = require('body-parser');
 var morgan      = require('morgan');
 var User        = require('./app/model/user');
@@ -85,19 +81,19 @@ function initAdress(){
 
 // routes
 
-app.get('/debug',function(req,res){
+apiRoutes.get('/debug',function(req,res){
   res.json({success: true});
 })
 
-app.post('/upload', function(req,res){
+apiRoutes.post('/upload', function(req,res){
   tokenHandler(req,res,fileT.fromClient);
 })
 
-app.post('/download', function(req,res){
+apiRoutes.post('/download', function(req,res){
   tokenHandler(req,res,fileT.toClient);
 })
 
-app.get('/info', function(req,res){
+apiRoutes.get('/info', function(req,res){
   tokenHandler(req,res,infoHandler);
 })
 
