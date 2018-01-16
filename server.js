@@ -93,7 +93,7 @@ apiRoutes.get('/info', function(req,res){
   tokenHandler(req,res,infoHandler);
 })
 
-apiRoutes.get('/session', function(req,res){
+apiRoutes.post('/session', function(req,res){
   tokenHandler(req,res,db.createSession);
 })
 

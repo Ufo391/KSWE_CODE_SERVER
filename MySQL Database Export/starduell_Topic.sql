@@ -37,7 +37,7 @@ CREATE TABLE `Topic` (
 
 LOCK TABLES `Topic` WRITE;
 /*!40000 ALTER TABLE `Topic` DISABLE KEYS */;
-INSERT INTO `Topic` VALUES ('Käse','Bringe in deine lyrische Improvisation 4 verschiedene Käsesorten ein.'),('Vokabeln','Bringe in deine lyrische Improvisation die Worte: Hamster, Orange und Eierkopf mit ein.');
+INSERT INTO `Topic` VALUES ('Kaese','Bringe in deine lyrische Improvisation 4 verschiedene Käsesorten ein.'),('Vokabeln','Bringe in deine lyrische Improvisation die Worte: Hamster, Orange und Eierkopf mit ein.');
 /*!40000 ALTER TABLE `Topic` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -50,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-10 16:31:26
+-- Dump completed on 2018-01-16 13:03:55

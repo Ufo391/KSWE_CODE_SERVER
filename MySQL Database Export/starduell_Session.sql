@@ -26,7 +26,6 @@ DROP TABLE IF EXISTS `Session`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `Session` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `type` int(11) NOT NULL,
   `date` datetime NOT NULL,
   `creator_username` varchar(32) NOT NULL,
   `topic_name` varchar(64) NOT NULL,
@@ -38,7 +37,7 @@ CREATE TABLE `Session` (
   CONSTRAINT `session_person_username` FOREIGN KEY (`creator_username`) REFERENCES `Person` (`username`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `session_topic_name` FOREIGN KEY (`topic_name`) REFERENCES `Topic` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `session_type_name` FOREIGN KEY (`type_name`) REFERENCES `Type` (`name`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -59,4 +58,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-10 16:31:25
+-- Dump completed on 2018-01-16 13:03:55

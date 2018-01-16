@@ -37,7 +37,7 @@ CREATE TABLE `Type` (
 
 LOCK TABLES `Type` WRITE;
 /*!40000 ALTER TABLE `Type` DISABLE KEYS */;
-INSERT INTO `Type` VALUES ('Collaboration','Performe zusammen mit jemanden und begeistere die Leute!'),('Competition','Fordere jemanden zum Duell herraus und zeige dem Publikum wer der bessere ist!'),('Solo','Zeige den Menschen was in dir steckt!');
+INSERT INTO `Type` VALUES ('Collaboration','Performe zusammen mit jemanden und begeistere die Leute!'),('Competition','Fordere jemanden zum Duell herraus und zeige deinem Publikum wer der bessere ist!'),('Solo','Zeige den Menschen was in dir steckt!');
 /*!40000 ALTER TABLE `Type` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -50,4 +50,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-10 16:31:26
+-- Dump completed on 2018-01-16 13:03:55
