@@ -29,7 +29,12 @@ module.exports = function(req,res){
             
             _query = "SELECT * FROM Type;";
             
-        }else{
+        }else if(param === 'session'){
+            
+            _query = "select Session.id, Session.date, Session.creator_username, Session.topic_name, Session.type_name, Person_Session.participant_username, Person_Session.accepted from Session left join Person_Session on Session.id = Person_Session.session_id;";
+            
+        }
+        else{
             res.json({success: false, msg: 'unknown parameter: ' + param});
             return;
         }
