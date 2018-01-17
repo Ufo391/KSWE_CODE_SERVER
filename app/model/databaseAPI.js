@@ -10,7 +10,7 @@ var connection_info = {
     database: "starduell"
   };
 
-function execute (command,callback){
+function execute(command,callback){
     
     var con = mysql.createConnection(connection_info);    
 
@@ -106,6 +106,22 @@ module.exports.createSession = function(req,res,creator_username){
         });
 
     });    
+
+}
+
+module.exports.addFollower = function(res, followable_username, follower_username){
+
+    var _query = "insert into Follow_Person (followable_username,follower_username) values ('" + followable_username + "','" + follower_username + "');";
+    try{
+        execute(_query,function(){
+            
+            res.json({success: true, msg: follower_username + ' follows ' + followable_username});
+    
+        });
+    }
+    catch(e){
+        res.json({success: false, msg: e});
+    }    
 
 }
 

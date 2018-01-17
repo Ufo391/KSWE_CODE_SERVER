@@ -65,15 +65,15 @@ function response(flag_result,message, resp){
     resp.json({success: flag_result, msg: message});
 }
 
-module.exports.uploadVideo = function(req,res,username){
+function addFollower(req,res,follower_username){
+    
+    var followable = req.body.followable_username;
 
-    var query = "";
+    if(followable === undefined){
+        response(false,"missing follower", res);
+    }
 
-}
-
-module.exports.downloadVideo = function(req,res,username){
-
-
+    db.addFollower(res,followable,follower_username)
 
 }
 
@@ -104,3 +104,4 @@ getToken = function (headers) {
 module.exports.register = register;
 module.exports.compare = compare;
 module.exports.login = login;
+module.exports.addFollower = addFollower;

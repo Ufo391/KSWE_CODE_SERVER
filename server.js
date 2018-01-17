@@ -4,8 +4,8 @@ var upload = require('express-fileupload');
 
 var bodyParser  = require('body-parser');
 var morgan      = require('morgan');
-var User        = require('./app/model/user');
 
+var user        = require('./app/model/user');
 var db = require('./app/model/databaseAPI');
 var fileT = require('./app/com/filetransfer');
 var tokenHandler = require('./app/security/tokenHandler');
@@ -62,9 +62,13 @@ apiRoutes.post('/session', function(req,res){
 })
 
 apiRoutes.post('/signup', function(req, res) {
-  User.register(req,res);
+  user.register(req,res);
  });
 
 apiRoutes.get('/authenticate', function(req, res) {  
-  User.login(req,res);
+  user.login(req,res);
+});
+
+apiRoutes.post('/follow', function(req, res) {  
+  tokenHandler(req,res,user.addFollower);
 });
