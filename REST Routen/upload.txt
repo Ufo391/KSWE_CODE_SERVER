@@ -1,0 +1,36 @@
+﻿Route: .../api/upload
+
+Info:
+
+	Dem Client ist es hierdurch möglich eine Datei auf den Server zu laden
+
+Typ: 
+	POST
+
+Tokenabhängig:
+	ja
+
+Header:
+	authorization = "Wert des Tokens"
+
+
+Body: form-data (nicht urlencoded)
+	upfile = "liste an ausgewählten Datein"
+
+Antwort:
+
+	Erfolg:
+
+		{
+    "success": true,
+    "msg": "Done! Uploading files"
+}
+
+	Fehler:
+
+		{
+    "success": false,
+    "msg": "No File selected!"
+} --> Keine Datein übergeben
+
+		

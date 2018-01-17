@@ -1,0 +1,25 @@
+﻿Route: .../api/authenticate
+
+Info:
+
+	Dem Client wird nach erfolgreicher Authentifizierung durch Benutzernamen und Passwort
+	ein Token zurück gegeben
+
+Typ: 
+	GET
+
+Tokenabhängig:
+	nein
+
+Header:
+	name = "Username des einzuloggenden Benutzers"
+	password = "Passwort im klartext"
+
+Antwort:
+
+	Erfolg:
+
+		{
+    "success": true,
+    "msg": "User created."
+}	

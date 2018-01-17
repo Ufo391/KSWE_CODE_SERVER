@@ -1,0 +1,28 @@
+﻿Route: .../api/upload
+
+Info:
+
+	Dem Client ist es hierdurch möglich einen neuen Benutzer fürs System zu registrieren
+
+Typ: 
+	POST
+
+Tokenabhängig:
+	nein
+
+Header:
+
+
+Body: (urlencoded)
+	name = "liste an ausgewählten Datein"
+	password = "unverschlüsseltes gewünschtes Passwort"
+	email = "E-Mailadresse des neuen Benutzers" (optional)
+
+Antwort:
+
+	Erfolg:
+
+		{
+    "success": true,
+    "msg": "User created."
+}	

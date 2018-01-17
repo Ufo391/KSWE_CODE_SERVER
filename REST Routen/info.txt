@@ -1,0 +1,44 @@
+﻿Route: .../api/info
+Info:
+
+	Dem Client ist es hierdurch möglich eine Datei auf den Server zu laden
+
+Typ: 
+	GET
+
+Tokenabhängig:
+	ja
+
+Header:
+	authorization = "Wert des Tokens"
+	mode = {
+
+		show:all --> Gib alle verfügbaren Ressourcen
+		show:filtered --> Gib alle verfügbaren Ressourcen die dem übergebenem Filterkriterium entsprechen
+	}
+
+	parameter = {
+
+		(show:all)
+		genre --> Gib alle verfügbaren Genres
+		instrumental --> ""
+		topic --> ""
+		type --> ""
+		session --> ""
+
+
+		(show:filtered)
+		instrumental:id:X --> Gib Instrumental mit der ID = X (Ganzzahl)
+	}
+
+Notizen:
+
+Antworten:
+
+	Fehler:
+
+		{
+    "success": false,
+    "msg": "no database entry found"
+} --> Zu den übergebenen Parametern wurde kein Datensatz in der DB gefunden
+		

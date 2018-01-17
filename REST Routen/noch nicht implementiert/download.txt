@@ -1,0 +1,24 @@
+﻿Route: .../api/download
+
+Info:
+
+	Dem Client ist es hierdurch möglich eine Datei vom Server zu laden
+
+Typ: 
+	GET
+
+Tokenabhängig:
+	ja
+
+Header:
+	Authorization : "Wert des Tokens"
+	mode : {
+
+		audio:id --> Herunterladen eines Instrumentals durch seine ID
+		video:id --> Herunterladen eines Videos durch seine ID
+	}
+
+Notizen:
+
+
+Antwort:

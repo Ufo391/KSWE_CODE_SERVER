@@ -1,0 +1,32 @@
+﻿Route: .../api/session
+
+Info:
+
+	Dem Client ist es hierdurch möglich eine Session zu starten.
+	Es wird in der Datenbank eine Session hinterlegt und eine Einladung zur Session vermerkt.
+Typ: 
+	POST
+
+Tokenabhängig:
+	ja
+
+Header:
+	authorization = "Wert des Tokens"
+
+
+Body: (urlencoded)
+	topic = "Name des Topics" (primary key der Tabelle Topic)
+	type = "Name des Types" (primary key der Tabelle Type)
+	participant = "Username des einzuladenen Teilnehmers" (primary key der Tabelle Person) *Bei Solo Session wird einfach der Username des Erstellers übergeben!
+
+Antwort:
+
+	Erfolg:
+
+		{
+    "success": true,
+    "msg": "Session successfully created!",
+    "id": 19
+}
+
+		
