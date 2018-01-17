@@ -27,6 +27,7 @@ DROP TABLE IF EXISTS `Follow_Person`;
 CREATE TABLE `Follow_Person` (
   `followable_username` varchar(32) NOT NULL,
   `follower_username` varchar(32) NOT NULL,
+  PRIMARY KEY (`followable_username`,`follower_username`),
   KEY `followable_username_idx` (`followable_username`),
   KEY `follower_username_idx` (`follower_username`),
   CONSTRAINT `follow_Person_followable` FOREIGN KEY (`followable_username`) REFERENCES `Person` (`username`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -52,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-17 12:47:17
+-- Dump completed on 2018-01-17 14:07:18

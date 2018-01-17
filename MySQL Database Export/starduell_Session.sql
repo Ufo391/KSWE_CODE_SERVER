@@ -37,7 +37,7 @@ CREATE TABLE `Session` (
   CONSTRAINT `session_person_username` FOREIGN KEY (`creator_username`) REFERENCES `Person` (`username`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `session_topic_name` FOREIGN KEY (`topic_name`) REFERENCES `Topic` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `session_type_name` FOREIGN KEY (`type_name`) REFERENCES `Type` (`name`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,6 +46,7 @@ CREATE TABLE `Session` (
 
 LOCK TABLES `Session` WRITE;
 /*!40000 ALTER TABLE `Session` DISABLE KEYS */;
+INSERT INTO `Session` VALUES (20,'2018-01-17 12:38:34','peter','Kaese','Solo');
 /*!40000 ALTER TABLE `Session` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -58,4 +59,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-17 12:47:17
+-- Dump completed on 2018-01-17 14:07:18

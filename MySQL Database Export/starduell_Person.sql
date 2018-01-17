@@ -39,7 +39,7 @@ CREATE TABLE `Person` (
 
 LOCK TABLES `Person` WRITE;
 /*!40000 ALTER TABLE `Person` DISABLE KEYS */;
-INSERT INTO `Person` VALUES ('MCDonalds','$2a$10$Ogc3B4o4bkNaF6vohDeLceLBUaP/DBaJDwvk6Xduqp7vbX1tDNvmi','mcs@hotmail.de',0),('Peter','$2a$10$5aoJ6bT5nIiO6pPwnadWnelIzCHSDpX7OOOnR8NCOCbYIx8EuOTh2','peterp@hotmail.de',0);
+INSERT INTO `Person` VALUES ('MCDonalds','$2a$10$Ogc3B4o4bkNaF6vohDeLceLBUaP/DBaJDwvk6Xduqp7vbX1tDNvmi','mcs@hotmail.de',0),('Peter','$2a$10$5aoJ6bT5nIiO6pPwnadWnelIzCHSDpX7OOOnR8NCOCbYIx8EuOTh2','peterp@hotmail.de',0),('RobertNaizen','$2a$10$tzgN8M32p90K/ncr.TObEu8zymWTL6dSPSgHoTERWp5.QJa5.CZ0y','money@bank.de',0);
 /*!40000 ALTER TABLE `Person` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-17 12:47:17
+-- Dump completed on 2018-01-17 14:07:18
