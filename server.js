@@ -85,7 +85,7 @@ apiRoutes.post('/upload', function(req,res){
   tokenHandler(req,res,fileT.fromClient);
 })
 
-apiRoutes.post('/download', function(req,res){
+apiRoutes.get('/download', function(req,res){
   tokenHandler(req,res,fileT.toClient);
 })
 
