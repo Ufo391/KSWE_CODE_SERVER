@@ -101,6 +101,6 @@ apiRoutes.post('/signup', function(req, res) {
   User.register(req,res);
  });
 
-apiRoutes.post('/authenticate', function(req, res) {  
+apiRoutes.get('/authenticate', function(req, res) {  
   User.login(req,res);
 });

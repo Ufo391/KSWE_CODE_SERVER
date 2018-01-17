@@ -100,12 +100,12 @@ module.exports.createSession = function(req,res,creator_username){
     
 
     if(topic === undefined || type === undefined){
-        res.json({success: false, msg: 'undefined topic or type!'});
+        res.json({success: false, msg: 'missing topic or type!'});
         return;
     }
 
     if(participant === undefined){
-        res.json({success: false, msg: 'undefined participant!'});
+        res.json({success: false, msg: 'missing participant!'});
         return;
     }
 
@@ -128,10 +128,6 @@ module.exports.createSession = function(req,res,creator_username){
         });
 
     });    
-
-
-    // Benutzer Einladung eines weiteren Benutzers
-
 
 }
 

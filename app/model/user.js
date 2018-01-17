@@ -32,8 +32,8 @@ function register(req,res){
 
 function login(req,res){
 
-    var name = req.body.name;
-    var password = req.body.password;
+    var name = req.headers.name;
+    var password = req.headers.password;
 
     db.findUserByName(name,function(result){
 
