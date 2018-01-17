@@ -4,7 +4,6 @@ module.exports = function(req,res){
 
     var mode = req.headers.mode;
     var param = req.headers.parameter;
-    var _query = "";
 
     if(mode === undefined || param === undefined){
         res.json({success: false, msg: 'missing mode or parameter!'});
@@ -15,23 +14,23 @@ module.exports = function(req,res){
 
         if(param === 'genre'){
 
-        _query = "SELECT * FROM Genre;";
+            db.getAllGenre(res);
 
         }else if(param === 'instrumental'){
 
-            _query = "SELECT * FROM Instrumental;";
+            db.getAllInstrumental(res);
 
         }else if(param === 'topic'){
             
-            _query = "SELECT * FROM Topic;";
+            db.getAllTopic(res);
             
         }else if(param === 'type'){
             
-            _query = "SELECT * FROM Type;";
+            db.getAllType(res);
             
         }else if(param === 'session'){
             
-            _query = "select Session.id, Session.date, Session.creator_username, Session.topic_name, Session.type_name, Person_Session.participant_username, Person_Session.accepted from Session left join Person_Session on Session.id = Person_Session.session_id;";
+            db.getAllSession(res);
             
         }
         else{
@@ -52,7 +51,7 @@ module.exports = function(req,res){
         if(params[0] === 'instrumental'){
 
                 if(params[1] === 'id'){
-                    _query = "SELECT * FROM Instrumental where id = '" + params[2] + "';";
+                    db.getInstrumentalByID(res,params[2]);
                 }
                 else{
                     res.json({success: false, msg: 'unknown parameter: ' + param});
@@ -69,13 +68,4 @@ module.exports = function(req,res){
         res.json({success: false, msg: 'unknown mode: ' + mode});
         return;
     }
-
-    db.execute(_query,function(result){
-        if(result.length === 0){
-            res.json({success: false, msg: 'no database entry found'}); 
-        }else{            
-            res.json({success: true, msg: result}); 
-        }
-        
-    });
 }

@@ -97,9 +97,89 @@ module.exports.createSession = function(req,res,creator_username){
 
 }
 
-module.exports.insertContent = function(username,filepath, name, duration){
+module.exports.getAllGenre = function(res){
+   
+    var _query = "SELECT * FROM Genre;";
+   
+    execute(_query,function(result){
+        if(result.length === 0){
+            res.json({success: false, msg: 'no database entry found'}); 
+        }else{            
+            res.json({success: true, msg: result}); 
+        }    
+    });
 
 }
+
+module.exports.getAllInstrumental = function(res){
+    
+     var _query = "SELECT * FROM Instrumental;";
+    
+     execute(_query,function(result){
+         if(result.length === 0){
+             res.json({success: false, msg: 'no database entry found'}); 
+         }else{            
+             res.json({success: true, msg: result}); 
+         }    
+     });
+     
+ }
+
+ module.exports.getAllTopic = function(res){
+    
+     var _query = "SELECT * FROM Topic;";
+    
+     execute(_query,function(result){
+         if(result.length === 0){
+             res.json({success: false, msg: 'no database entry found'}); 
+         }else{            
+             res.json({success: true, msg: result}); 
+         }    
+     });
+     
+ }
+
+ module.exports.getAllType = function(res){
+    
+     var _query = "SELECT * FROM Type;";
+    
+     execute(_query,function(result){
+         if(result.length === 0){
+             res.json({success: false, msg: 'no database entry found'}); 
+         }else{            
+             res.json({success: true, msg: result}); 
+         }    
+     });
+     
+ }
+
+ module.exports.getAllSession = function(res){
+    
+    _query = "select Session.id, Session.date, Session.creator_username, Session.topic_name, Session.type_name, Person_Session.participant_username, Person_Session.accepted from Session left join Person_Session on Session.id = Person_Session.session_id;";
+    
+     execute(_query,function(result){
+         if(result.length === 0){
+             res.json({success: false, msg: 'no database entry found'}); 
+         }else{            
+             res.json({success: true, msg: result}); 
+         }    
+     });
+     
+ }
+
+ module.exports.getInstrumentalByID = function(res,id){
+
+    _query = "SELECT * FROM Instrumental where id = '" + id + "';";
+
+    execute(_query,function(result){
+        if(result.length === 0){
+            res.json({success: false, msg: 'no database entry found'}); 
+        }else{            
+            res.json({success: true, msg: result}); 
+        }    
+    });
+
+ }
 
 module.exports.execute = execute;
 module.exports.qResultToJSON = qResultToJSON;
