@@ -28,10 +28,11 @@ CREATE TABLE `Person_Session` (
   `participant_username` varchar(32) NOT NULL,
   `session_id` int(11) NOT NULL,
   `accepted` int(11) NOT NULL,
-  UNIQUE KEY `participant_username_UNIQUE` (`participant_username`),
+  PRIMARY KEY (`session_id`),
   KEY `person_session_session_id_idx` (`session_id`),
-  CONSTRAINT `person_session_person_username` FOREIGN KEY (`participant_username`) REFERENCES `Person` (`username`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `person_session_session_id` FOREIGN KEY (`session_id`) REFERENCES `Session` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `person_session_username_idx` (`participant_username`),
+  CONSTRAINT `person_session_session_id` FOREIGN KEY (`session_id`) REFERENCES `Session` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `person_session_username` FOREIGN KEY (`participant_username`) REFERENCES `Person` (`username`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -53,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-16 13:03:55
+-- Dump completed on 2018-01-17 12:47:16
