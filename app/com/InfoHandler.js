@@ -50,19 +50,28 @@ module.exports = function(req,res){
 
         if(params[0] === 'instrumental'){
 
-                if(params[1] === 'id'){
-                    db.getInstrumentalByID(res,params[2]);
-                }
-                else{
-                    res.json({success: false, msg: 'unknown parameter: ' + param});
-                    return;
-                }
+            if(params[1] === 'id'){
+                db.getInstrumentalByID(res,params[2]);
+            }
+            else{
+                res.json({success: false, msg: 'unknown parameter: ' + param});
+                return;
+            }
 
-        }else{
+        }else if(params[0] === 'session'){
+            
+            if(params[1] === 'id'){
+                db.getSessionByID(res,params[2]);
+            }
+            else{
+                res.json({success: false, msg: 'unknown parameter: ' + param});
+                return;
+            }
+        }
+        else{
             res.json({success: false, msg: 'unknown parameter: ' + param});
             return;
-        }        
-        
+        }            
     }
     else{
         res.json({success: false, msg: 'unknown mode: ' + mode});

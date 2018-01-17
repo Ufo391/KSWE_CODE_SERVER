@@ -2,18 +2,15 @@
 var express = require('express');
 var upload = require('express-fileupload');
 
-var ip = require('./app/util/ip')
-
 var bodyParser  = require('body-parser');
 var morgan      = require('morgan');
 var User        = require('./app/model/user');
 
 var db = require('./app/model/databaseAPI');
-
 var fileT = require('./app/com/filetransfer');
 var tokenHandler = require('./app/security/tokenHandler');
 var infoHandler = require('./app/com/InfoHandler');
-var fs = require('fs');
+var ip = require('./app/util/ip')
 
 // instances
 var app = express();
@@ -37,7 +34,7 @@ var apiRoutes = express.Router();
 app.use('/api', apiRoutes);
 
 
-// Functions
+// functions
 
 var server = app.listen(server_port, function () {
 
