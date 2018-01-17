@@ -64,7 +64,7 @@ module.exports.toClient = function(req,res)
 
       _query = "select Instrumental.audio_binary_path from Instrumental where id = "+ parameter +";";
 
-      db.query(_query,function(result){
+      db.execute(_query,function(result){
 
         var filepath = uploads_location + 'audio/' + db.qResultToJSON(result).audio_binary_path;        
         download(filepath,res);
@@ -75,7 +75,7 @@ module.exports.toClient = function(req,res)
 
       _query = "select Content.video_binary_path from Content where id = "+ parameter +";";
       
-            db.query(_query,function(result){
+            db.execute(_query,function(result){
       
               var filepath = uploads_location + 'audio/' + db.qResultToJSON(result).audio_binary_path;        
               download(filepath,res);

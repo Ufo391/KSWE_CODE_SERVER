@@ -70,7 +70,7 @@ module.exports = function(req,res){
         return;
     }
 
-    db.query(_query,function(result){
+    db.execute(_query,function(result){
         if(result.length === 0){
             res.json({success: false, msg: 'no database entry found'}); 
         }else{            
