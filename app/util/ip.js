@@ -26,4 +26,13 @@ function showServerIP(){
     });
   }
 
-  module.exports.showServerIP = showServerIP;
+function initialize(server){
+  
+  var host = server.address().address
+  var port = server.address().port
+
+  console.log("Server listening at Port %s", port)
+  showServerIP();
+}
+
+module.exports.initialize = initialize;

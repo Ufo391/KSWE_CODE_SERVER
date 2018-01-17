@@ -4,6 +4,30 @@ var db = require('../model/databaseAPI');
 
 var uploads_location = path.dirname(require.main.filename) + '/files/';
 
+module.exports.initialize = function(){
+  
+  initFilesDir();  
+  
+  
+}
+  
+function initFilesDir(){
+  
+  createDir('./files');
+  createDir('./files/audio');
+  createDir('./files/video');
+
+}
+  
+function createDir(_path){
+  
+  if(fs.existsSync(_path) === false){
+    fs.mkdirSync(_path);
+
+  }
+
+}
+
 // Empfange Datei vom Client
 module.exports.fromClient = function(req,res, username)
 {

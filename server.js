@@ -41,43 +41,10 @@ app.use('/api', apiRoutes);
 
 var server = app.listen(server_port, function () {
 
-  initialize();
+  fileT.initialize();
+  ip.initialize(server);
 
 })
-
-function initialize(){
-
-  initFilesDir();
-  
-  initAdress();
-
-}
-
-function initFilesDir(){
-
-  createDir('./files');
-  createDir('./files/audio');
-  createDir('./files/video');
-
-}
-
-function createDir(_path){
-
-  if(fs.existsSync(_path) === false){
-    fs.mkdirSync(_path);
-
-  }
-
-}
-
-function initAdress(){
-
-  var host = server.address().address
-  var port = server.address().port
-
-  console.log("Server listening at Port %s", port)
-  ip.showServerIP();
-}
 
 // routes
 
