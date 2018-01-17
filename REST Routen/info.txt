@@ -1,7 +1,7 @@
 ﻿Route: .../api/info
 Info:
 
-	Dem Client ist es hierdurch möglich eine Datei auf den Server zu laden
+	Dem Client ist es hierdurch möglich divierse Informationen aus der Datenbank zu entnehmen
 
 Typ: 
 	GET
