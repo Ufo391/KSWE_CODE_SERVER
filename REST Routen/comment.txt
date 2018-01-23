@@ -1,0 +1,29 @@
+﻿Route: .../api/comment
+
+Info:
+
+	Dem Client ist es hierdurch möglich eine Session zu kommentieren
+
+Typ: 
+	POST
+
+Tokenabhängig:
+	ja
+
+Header:
+	authorization = "Tokenwert"
+
+Body: (urlencoded)
+
+	message = "Kommentar Nachricht"
+	session_id = "ID der Session auf die sich der Kommentar bezieht"
+
+Antwort:
+
+	Erfolg:
+
+{
+    "success": true,
+    "msg": "Successfully created comment!",
+    "id": 4
+}

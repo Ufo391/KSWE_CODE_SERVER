@@ -27,11 +27,14 @@ Header:
 		session --> ""
 		follower --> Gibt alle follwer des Benutzers zurück (Wenn ihm keine folgen --> "no Databasy entry")
 		follows --> Gibt alle Benutzer zurück wem der Username folgt (Wenn ihm keine folgen --> "no Databasy entry")
+		comment --> Gibt alle verfügbaren Kommentare
 
 
 		(show:filtered)
 		instrumental:id:X --> Gib Instrumental mit der ID = X (Ganzzahl)
 		session:id:x --> ""
+		comment:id:x --> ""
+		session_comment:id:x --> Gibt alle Kommentare von der Session mit der session_id = X
 	}
 
 Notizen:

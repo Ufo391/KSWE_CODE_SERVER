@@ -44,6 +44,11 @@ module.exports = function(req,res, username){
             db.getAllFollower(res,username);
 
         }
+        else if(param === 'comment'){
+            
+            db.getAllComments(res,username);
+
+        }
         else{
             res.json({success: false, msg: 'unknown parameter: ' + param});
             return;
@@ -73,6 +78,26 @@ module.exports = function(req,res, username){
             
             if(params[1] === 'id'){
                 db.getSessionByID(res,params[2]);
+            }
+            else{
+                res.json({success: false, msg: 'unknown parameter: ' + param});
+                return;
+            }
+        }
+        else if(params[0] === 'comment'){
+            
+            if(params[1] === 'id'){
+                db.getCommentByID(res,params[2]);
+            }
+            else{
+                res.json({success: false, msg: 'unknown parameter: ' + param});
+                return;
+            }
+        }
+        else if(params[0] === 'session_comment'){
+            
+            if(params[1] === 'id'){
+                db.getCommentsOfSessionByID(res,params[2]);
             }
             else{
                 res.json({success: false, msg: 'unknown parameter: ' + param});

@@ -152,6 +152,12 @@ module.exports.createComment = function(req,res,username){
 
 }
 
+module.exports.getCommentsOfSessionByID = function(res,session_id){
+    
+    _query = "SELECT Comment.id as comment_id, Comment.date as comment_date, Comment.creator_username as comment_creator, Comment.message, Session.id as session_id, Session.creator_username as session_creator, Person_Session.participant_username FROM Comment inner join Session on Comment.session_id = Session.id inner join Person_Session on Person_Session.session_id = Comment.session_id where Comment.session_id = "+ session_id +";";
+    infoRoute(_query,res);
+}
+
 
 
 // show:all
@@ -234,8 +240,8 @@ module.exports.getSessionByID = function(res,id){
 
 module.exports.getCommentByID = function(res,id){
     
-_query = "select Session.id, Session.date, Session.creator_username, Session.topic_name, Session.type_name, Person_Session.participant_username, Person_Session.accepted from Session inner join Person_Session on Session.id = Person_Session.session_id where Session.id = "+ id +";";
-infoRoute(_query,res);
+    _query = "select * from Comment where id = "+ id +";";
+    infoRoute(_query,res);
 }
 
 
