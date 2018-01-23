@@ -40,6 +40,14 @@ function infoRoute(_query,res){
 
 }
 
+function getLastNumericID(tablename,callback){
+    _query = "SELECT * FROM " + tablename + " ORDER BY id DESC LIMIT 0, 1";
+    
+    execute(_query,function(result){
+        callback(qResultToJSON(result).id);
+    })
+}
+
 
 module.exports.createUser = function (name,password,email,response, res){
 
@@ -92,19 +100,14 @@ module.exports.createSession = function(req,res,creator_username){
     
     execute(_query,function(){
 
-        // id der Session holen
-        _query = "Select id From Session where date = '" + date + "'";        
-        execute(_query,function(result){
-
-            var db_result = qResultToJSON(result);
-
-            _query = "insert into Person_Session (participant_username, session_id, accepted) values ('" + participant + "'," + db_result.id + ","  + 0 + ");"; 
+        getLastNumericID("Session",function(result_id){
+            
+            _query = "insert into Person_Session (participant_username, session_id, accepted) values ('" + participant + "'," + result_id + ","  + 0 + ");"; 
             execute(_query,function(){                
-                res.json({success: true, msg: 'Session successfully created!', id: db_result.id});
-            });            
+                res.json({success: true, msg: 'Session successfully created!', id: result_id});
+            });  
 
         });
-
     });    
 
 }
@@ -122,6 +125,30 @@ module.exports.addFollower = function(res, followable_username, follower_usernam
     catch(e){
         res.json({success: false, msg: e});
     }    
+
+}
+
+module.exports.createComment = function(req,res,username){
+
+    var message = req.body.message;
+    var session_id = req.body.session_id;
+    var date = new Date().toISOString().slice(0,19).replace('T',' ');
+
+    if(message === undefined || session_id === undefined){
+        res.json({success: false, msg: 'Invalid Header! --> message:' + message + " & session_id: " + session_id}); 
+        return;
+    }
+
+    var _query = "Insert into Comment (creator_username,session_id,message, date) values ('" + username + "'," + session_id + ",'" + message + "','" + date + "');";
+
+    execute(_query,function(){
+
+        getLastNumericID("Comment",function(result_id){
+
+            res.json({success: true, msg: 'Successfully created comment!', id: result_id}); 
+
+        });
+    });
 
 }
 
