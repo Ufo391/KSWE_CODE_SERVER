@@ -101,7 +101,7 @@ module.exports.createSession = function(req,res,creator_username){
     execute(_query,function(){
 
         getLastNumericID("Session",function(result_id){
-            
+
             _query = "insert into Person_Session (participant_username, session_id, accepted) values ('" + participant + "'," + result_id + ","  + 0 + ");"; 
             execute(_query,function(){                
                 res.json({success: true, msg: 'Session successfully created!', id: result_id});
@@ -186,7 +186,7 @@ module.exports.getAllInstrumental = function(res){
 
  module.exports.getAllSession = function(res){
     
-    _query = "select Session.id, Session.date, Session.creator_username, Session.topic_name, Session.type_name, Person_Session.participant_username, Person_Session.accepted from Session left join Person_Session on Session.id = Person_Session.session_id;";
+    _query = "select Session.id, Session.date, Session.creator_username, Session.topic_name, Session.type_name, Person_Session.participant_username, Person_Session.accepted from Session inner join Person_Session on Session.id = Person_Session.session_id;";
     infoRoute(_query,res);
      
  }
@@ -209,6 +209,14 @@ module.exports.getAllInstrumental = function(res){
     
      }
 
+module.exports.getAllComments = function(res){
+
+    _query = "select * from Comment;";
+    console.log(_query);
+    infoRoute(_query,res);
+
+}     
+
  // show:filtered
 
  module.exports.getInstrumentalByID = function(res,id){
@@ -220,8 +228,14 @@ module.exports.getAllInstrumental = function(res){
 
 module.exports.getSessionByID = function(res,id){
         
-    _query = "select Session.id, Session.date, Session.creator_username, Session.topic_name, Session.type_name, Person_Session.participant_username, Person_Session.accepted from Session left join Person_Session on Session.id = Person_Session.session_id where Session.id = "+ id +";";
+    _query = "select Session.id, Session.date, Session.creator_username, Session.topic_name, Session.type_name, Person_Session.participant_username, Person_Session.accepted from Session inner join Person_Session on Session.id = Person_Session.session_id where Session.id = "+ id +";";
     infoRoute(_query,res);
+}
+
+module.exports.getCommentByID = function(res,id){
+    
+_query = "select Session.id, Session.date, Session.creator_username, Session.topic_name, Session.type_name, Person_Session.participant_username, Person_Session.accepted from Session inner join Person_Session on Session.id = Person_Session.session_id where Session.id = "+ id +";";
+infoRoute(_query,res);
 }
 
 
