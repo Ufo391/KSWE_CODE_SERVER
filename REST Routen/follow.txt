@@ -1,0 +1,24 @@
+﻿Route: .../api/follow
+
+Info:
+
+	Dem Client ist es möglichen als Benutzer einem anderen Benutzer zu folgen.
+
+Typ: 
+	POST
+
+Tokenabhängig:
+	ja
+
+Header:
+	authorization : "Tokenwert"
+
+
+Body: (urlencoded)
+	followable_username : "Username des jenigen der verfolgt werden soll"
+
+Antwort:
+
+	Erfolg:
+
+	{ "success": true, "msg": "Peter follows RobertNaizen" }

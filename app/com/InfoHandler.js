@@ -1,9 +1,11 @@
 var db = require('../model/databaseAPI');
 
-module.exports = function(req,res){
+module.exports = function(req,res, username){
 
     var mode = req.headers.mode;
     var param = req.headers.parameter;
+
+    console.log(username);
 
     if(mode === undefined || param === undefined){
         res.json({success: false, msg: 'missing mode or parameter!'});
@@ -32,6 +34,15 @@ module.exports = function(req,res){
             
             db.getAllSession(res);
             
+        }else if(param === 'follows'){
+            
+            db.getAllFollows(res,username);
+            
+        }
+        else if(param === 'follower'){
+            
+            db.getAllFollower(res,username);
+
         }
         else{
             res.json({success: false, msg: 'unknown parameter: ' + param});

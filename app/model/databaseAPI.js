@@ -32,7 +32,7 @@ function infoRoute(_query,res){
 
     execute(_query,function(result){
         if(result.length === 0){
-            res.json({success: false, msg: 'no database entry found'}); 
+            res.json({success: true, msg: 'no database entry found'}); 
         }else{            
             res.json({success: true, msg: result}); 
         }    
@@ -163,6 +163,24 @@ module.exports.getAllInstrumental = function(res){
     infoRoute(_query,res);
      
  }
+
+ // zeige die Follower des "username"
+ module.exports.getAllFollower = function(res,username){
+
+    _query = "select Follow_Person.follower_username from Follow_Person where Follow_Person.followable_username = '" + username + "';";
+    console.log(_query);
+    infoRoute(_query,res);
+
+ }
+
+ // zeige wem "username" folgt
+ module.exports.getAllFollows = function(res,username){
+    
+        _query = "select Follow_Person.followable_username from Follow_Person where Follow_Person.follower_username = '" + username +"';";
+        console.log(_query);
+        infoRoute(_query,res);
+    
+     }
 
  // show:filtered
 

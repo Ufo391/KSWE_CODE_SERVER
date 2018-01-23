@@ -25,10 +25,13 @@ Header:
 		topic --> ""
 		type --> ""
 		session --> ""
+		follower --> Gibt alle follwer des Benutzers zurück (Wenn ihm keine folgen --> "no Databasy entry")
+		follows --> Gibt alle Benutzer zurück wem der Username folgt (Wenn ihm keine folgen --> "no Databasy entry")
 
 
 		(show:filtered)
 		instrumental:id:X --> Gib Instrumental mit der ID = X (Ganzzahl)
+		session:id:x --> ""
 	}
 
 Notizen:
