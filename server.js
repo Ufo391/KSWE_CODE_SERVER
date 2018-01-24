@@ -49,6 +49,9 @@ apiRoutes.get('/playback', function(req,res){
   // Route zum abspielen eines Videos (clicks inkrementieren nicht vergessen) / Instrumentals
 })
 
+apiRoutes.get('/like', function(req,res){
+  // Route zum liken eines Videos
+
 apiRoutes.post('/upload', function(req,res){
   tokenHandler(req,res,fileT.fromClient);
 })
