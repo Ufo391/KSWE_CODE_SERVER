@@ -15,15 +15,19 @@ Header:
 
 
 Body: form-data (nicht urlencoded)
-	upfile = "liste an ausgewählten Datein"
+	upfile = "liste an ausgewählten Datein oder einzelne Datei"
+	session_id = "Session auf die sich der Content bezieht"
+	instrumental_id = "instrumental des Contents"
+	content_duration = "Ganzzahl welche die Länge des Videos in Sekunden repräsentiert"
 
 Antwort:
 
 	Erfolg:
 
-		{
+{
     "success": true,
-    "msg": "Done! Uploading files"
+    "msg": "Content created!",
+    "content_id": 8
 }
 
 	Fehler:
