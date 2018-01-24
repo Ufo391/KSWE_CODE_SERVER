@@ -1,0 +1,28 @@
+﻿Route: .../api/download
+
+Info:
+
+	Dem Client ist es hierdurch möglich eine Video-/AudioDatei vom Server herunterzuladen.
+
+Typ: 
+	GET
+
+Tokenabhängig:
+	ja
+
+Header:
+	authorization = "Wert des Tokens"
+	mode = {
+		audio:id = "Client möchte Audio Datei mit [parameter]-id herunterladen"
+		video:id = "Client möchte Video Datei mit [parameter]-id herunterladen"
+	}
+
+	parameter = "id des gewünschten Objektes"
+
+Antwort:
+
+
+	Erfolg: Ein bytestream folgt als Response
+
+
+		
