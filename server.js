@@ -80,3 +80,8 @@ apiRoutes.post('/follow', function(req, res) {
 apiRoutes.post('/comment', function(req,res){
   tokenHandler(req,res,db.createComment);
 })
+
+// ACHTING: Änderung in DB einpflegen --> Table Like hat keine Primärschlüssel --> zusammengesetzten machen!!
+apiRoutes.post('/like', function(req,res){
+  tokenHandler(req,res,db.createLike);
+})
