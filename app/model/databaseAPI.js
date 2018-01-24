@@ -76,13 +76,29 @@ function qResultToJSON(q_result){
     return JSON.parse(JSON.stringify(q_result[0]));
 }
 
+module.exports.CreateContent = function(req,res,uploader_username, filepath){     
+    
+    var instrumental_id = req.body.instrumental_id;
+    var session_id = req.body.session_id;   
+    var content_duration = req.body.content_duration;
+    var views = 0;    
+
+    var _query = "insert into Content (date, duration,video_binary_path,views,session_id,creator_username,instrumental_id) values (NOW(),"+ content_duration +",'"+ filepath +"',"+views+","+session_id +",'"+ uploader_username+"',"+ instrumental_id +");";
+    execute(_query,function(){
+
+        getLastNumericID("Content",function(result_id){
+            res.json({success: true, msg: 'Content created!', content_id: result_id});
+        });        
+    });
+
+}
+
 module.exports.createSession = function(req,res,creator_username){
 
     var topic = req.body.topic;
     var type = req.body.type;
     var participant = req.body.participant;
     var _query = "";
-    var date = new Date().toISOString().slice(0,19).replace('T',' ');
     
 
     if(topic === undefined || type === undefined){
@@ -96,7 +112,7 @@ module.exports.createSession = function(req,res,creator_username){
     }
 
     // Session anlegen
-    _query = "insert into Session (date,creator_username,topic_name,type_name) values ('" + date + "','" + creator_username + "','" + topic + "','" + type + "');";
+    _query = "insert into Session (date,creator_username,topic_name,type_name) values (NOW(),'" + creator_username + "','" + topic + "','" + type + "');";
     
     execute(_query,function(){
 
@@ -131,15 +147,14 @@ module.exports.addFollower = function(res, followable_username, follower_usernam
 module.exports.createComment = function(req,res,username){
 
     var message = req.body.message;
-    var session_id = req.body.session_id;
-    var date = new Date().toISOString().slice(0,19).replace('T',' ');
+    var session_id = req.body.session_id;    
 
     if(message === undefined || session_id === undefined){
         res.json({success: false, msg: 'Invalid Header! --> message:' + message + " & session_id: " + session_id}); 
         return;
     }
 
-    var _query = "Insert into Comment (creator_username,session_id,message, date) values ('" + username + "'," + session_id + ",'" + message + "','" + date + "');";
+    var _query = "Insert into Comment (creator_username,session_id,message, date) values ('" + username + "'," + session_id + ",'" + message + "',NOW());";
 
     execute(_query,function(){
 
@@ -238,13 +253,21 @@ module.exports.getSessionByID = function(res,id){
     infoRoute(_query,res);
 }
 
+module.exports.getLocalSessionByID = function(id,callback){
+    
+    _query = "select Session.id, Session.date, Session.creator_username, Session.topic_name, Session.type_name, Person_Session.participant_username, Person_Session.accepted from Session inner join Person_Session on Session.id = Person_Session.session_id where Session.id = "+ id +";";
+    execute(_query,function(result){
+
+        callback(qResultToJSON(result));
+
+    });
+}
+
 module.exports.getCommentByID = function(res,id){
     
     _query = "select * from Comment where id = "+ id +";";
     infoRoute(_query,res);
 }
-
-
 
 module.exports.execute = execute;
 module.exports.qResultToJSON = qResultToJSON;

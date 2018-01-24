@@ -45,6 +45,10 @@ var server = app.listen(server_port, function () {
 
 // routes
 
+apiRoutes.get('/playback', function(req,res){
+  // Route zum abspielen eines Videos (clicks inkrementieren nicht vergessen) / Instrumentals
+})
+
 apiRoutes.post('/upload', function(req,res){
   tokenHandler(req,res,fileT.fromClient);
 })

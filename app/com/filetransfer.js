@@ -29,33 +29,54 @@ function createDir(_path){
 }
 
 // Empfange Datei vom Client
-module.exports.fromClient = function(req,res, username)
+module.exports.fromClient = function(req,res,username)
 {
 
-  if(req.files === undefined){
+  // Validiere
+  var session_id = req.body.session_id;
+  var instrumental_id = req.body.instrumental_id;
+  var content_duration = req.body.content_duration;  
+
+  if(req.files === null){
     res.json({success: false, msg: 'No File selected!'});
     return;
   }
 
-  var file = req.files.upfile,
-    name = file.name,
-    type = file.mimetype;
+  if( session_id === undefined || instrumental_id === undefined || content_duration === undefined){
+    res.json({success: false, msg: 'Some parameter are undefined: session_id = ' + session_id + " & instrumental_id = " + instrumental_id + " & content_duration = " + content_duration});
+    return;
+  }
 
-  var uploadpath = uploads_location + 'video/' + name;  
-  uploadpath = duplicateFileHandler(uploadpath,name);
+  db.getLocalSessionByID(session_id,function(result){
 
-  file.mv(uploadpath,function(err){
-    if(err){
-      console.log("File Upload Failed",name,err);        
-      res.json({success: false, msg: 'Error Occured!'});
-    }
-    else {
-      console.log("File Uploaded",name);        
-      res.json({success: true, msg: 'Done! Uploading files'});
-      // Datenbankeintrag generieren
+    // ist uploader bereichtigt ?
+    if((result.creator_username === username || result.participant_username === username) === false){
+      
+      res.json({success: false, msg: username + ' is prohibited to upload Content to this Session!', session: result});
+      return;
+
+    }else{
+
+      // Download
+      var file = req.files.upfile,
+      name = file.name,
+      type = file.mimetype;
+  
+      var uploadpath = uploads_location + 'video/' + name;  
+      uploadpath = duplicateFileHandler(uploadpath,name);
+  
+      file.mv(uploadpath,function(err){
+      if(err){
+        console.log("File Upload Failed",name,err);        
+        res.json({success: false, msg: 'Error Occured!'});
+      }
+      else {                   
+        db.CreateContent(req,res,username,uploadpath);      
+      }
+      });
+
     }
   });
-
 }
 
 function duplicateFileHandler(_path,name){

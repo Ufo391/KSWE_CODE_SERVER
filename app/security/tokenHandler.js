@@ -9,8 +9,7 @@ module.exports = function(req,res,callback){
     }
 
     try{
-        var encrypted_token = jwt.decode(getToken(req.headers), secret_token);
-        
+        var encrypted_token = jwt.decode(getToken(req.headers), secret_token);        
         callback(req,res,encrypted_token.username);
     }
     catch(e){
