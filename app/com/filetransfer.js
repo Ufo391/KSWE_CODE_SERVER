@@ -101,6 +101,11 @@ module.exports.toClient = function(req,res)
   var mode = req.headers.mode;
   var parameter = req.headers.parameter;
 
+  if(mode === undefined || parameter === undefined){
+    res.json({success: false, msg: 'Some header element are undefined: mode = ' + mode + " & parameter = " + parameter});
+    return;
+  }
+
   if(mode && parameter){
 
     var _query = "";
@@ -111,7 +116,7 @@ module.exports.toClient = function(req,res)
 
       db.execute(_query,function(result){
 
-        var filepath = uploads_location + 'audio/' + db.qResultToJSON(result).audio_binary_path;        
+        var filepath = uploads_location + db.qResultToJSON(result).audio_binary_path;        
         download(filepath,res);
 
       });
@@ -122,9 +127,8 @@ module.exports.toClient = function(req,res)
       
             db.execute(_query,function(result){
       
-              var filepath = uploads_location + 'audio/' + db.qResultToJSON(result).audio_binary_path;        
-              download(filepath,res);
-      
+              var filepath = db.qResultToJSON(result).video_binary_path;        
+              download(filepath,res);      
             });
 
     }else{
@@ -134,7 +138,7 @@ module.exports.toClient = function(req,res)
     }
   }
   else{
-    res.json({success: false, msg: 'Invalid header: ' + req.headers});
+    res.json({success: false, msg: 'Invalid header', header: req.headers});
   }
 }
 
