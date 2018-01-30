@@ -65,15 +65,25 @@ function response(flag_result,message, resp){
     resp.json({success: flag_result, msg: message});
 }
 
-function addFollower(req,res,follower_username){
+function follower(req,res,follower_username){
     
     var followable = req.body.followable_username;
+    var mode = req.body.mode;
 
     if(followable === undefined){
-        response(false,"missing follower", res);
+        response(false,"invalid followable: " + followable, res);
     }
 
-    db.addFollower(res,followable,follower_username)
+    if(mode === undefined || !(mode === 'add' || mode === 'rm')){
+        response(false,"invalid mode: " + mode, res);
+    }
+
+    if(mode === 'add'){
+        db.addFollower(res,followable,follower_username)
+    }
+    else{
+        db.removeFollower(res,followable,follower_username)
+    }    
 
 }
 
@@ -104,4 +114,4 @@ getToken = function (headers) {
 module.exports.register = register;
 module.exports.compare = compare;
 module.exports.login = login;
-module.exports.addFollower = addFollower;
+module.exports.follower = follower;

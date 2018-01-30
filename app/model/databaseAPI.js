@@ -133,11 +133,30 @@ module.exports.createSession = function(req,res,creator_username){
 
 module.exports.addFollower = function(res, followable_username, follower_username){
 
+    if(followable_username === follower_username){ res.json({success: false, msg: follower_username + ' can\'t follow himself!'}); return; }
+
     var _query = "insert into Follow_Person (followable_username,follower_username) values ('" + followable_username + "','" + follower_username + "');";
     try{
         execute(_query,function(){
             
             res.json({success: true, msg: follower_username + ' follows ' + followable_username});
+    
+        });
+    }
+    catch(e){
+        res.json({success: false, msg: e});
+        return;
+    }    
+
+}
+
+module.exports.removeFollower = function(res, followable_username, follower_username){
+
+    var _query = "delete from Follow_Person where followable_username = '" + followable_username + "' and follower_username = '" + follower_username + "';";
+    try{
+        execute(_query,function(){
+            
+            res.json({success: true, msg: follower_username + ' do\'s not follow ' + followable_username});
     
         });
     }

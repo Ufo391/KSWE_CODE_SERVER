@@ -75,7 +75,7 @@ apiRoutes.get('/authenticate', function(req, res) {
 })
 
 apiRoutes.post('/follow', function(req, res) {  
-  tokenHandler(req,res,user.addFollower);
+  tokenHandler(req,res,user.follower);
 })
 
 apiRoutes.post('/comment', function(req,res){
