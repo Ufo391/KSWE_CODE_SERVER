@@ -174,6 +174,24 @@ module.exports.getCommentsOfSessionByID = function(res,session_id){
 }
 
 
+module.exports.createLike = function(req,res,username){
+
+    var content_id = req.body.content_id;    
+
+    if(content_id === undefined || person_username === undefined){
+        res.json({success: false, msg: 'Some header are undefined: content_id = ' + content_id + ' & ' + person_username}); 
+        return;
+    }
+
+    var _query = "insert into Like (content_id,creator_username) values ("+ content_id +", "+ username +");";
+
+    execute(_query,function(){
+
+        res.json({success: true, msg: 'Like created'}); 
+
+    });
+}
+
 
 // show:all
 
