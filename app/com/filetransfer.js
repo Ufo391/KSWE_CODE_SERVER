@@ -112,7 +112,7 @@ module.exports.toClient = function(req,res)
 
     if(mode === "audio:id"){
 
-      _query = "select Instrumental.audio_binary_path from Instrumental where id = "+ parameter +";";
+      _query = "select Instrumental.audio_binary_path from Instrumental where id = " + parameter + ";";
 
       db.execute(_query,function(result){
 

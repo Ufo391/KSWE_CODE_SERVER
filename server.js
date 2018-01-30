@@ -30,6 +30,7 @@ app.use(upload());
 
 // bundle our routes
 var apiRoutes = express.Router();
+
 // connect the api routes under /api/*
 app.use('/api', apiRoutes);
 
@@ -46,11 +47,8 @@ var server = app.listen(server_port, function () {
 // routes
 
 apiRoutes.get('/playback', function(req,res){
-  // Route zum abspielen eines Videos (clicks inkrementieren nicht vergessen) / Instrumentals
+  tokenHandler(req,res,db.addClicks);
 })
-
-apiRoutes.get('/like', function(req,res){
-  // Route zum liken eines Videos
 
 apiRoutes.post('/upload', function(req,res){
   tokenHandler(req,res,fileT.fromClient);
@@ -70,21 +68,20 @@ apiRoutes.post('/session', function(req,res){
 
 apiRoutes.post('/signup', function(req, res) {
   user.register(req,res);
- });
+ })
 
 apiRoutes.get('/authenticate', function(req, res) {  
   user.login(req,res);
-});
+})
 
 apiRoutes.post('/follow', function(req, res) {  
   tokenHandler(req,res,user.addFollower);
-});
+})
 
 apiRoutes.post('/comment', function(req,res){
   tokenHandler(req,res,db.createComment);
 })
 
-// ACHTING: Änderung in DB einpflegen --> Table Like hat keine Primärschlüssel --> zusammengesetzten machen!!
 apiRoutes.post('/like', function(req,res){
-  tokenHandler(req,res,db.createLike);
+   tokenHandler(req,res,db.createLike); 
 })

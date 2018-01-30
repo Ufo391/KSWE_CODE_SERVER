@@ -10,6 +10,8 @@ var connection_info = {
     database: "starduell"
   };
 
+  // Hilfsfunktionen
+
 function execute(command,callback){
     
     var con = mysql.createConnection(connection_info);    
@@ -48,6 +50,7 @@ function getLastNumericID(tablename,callback){
     })
 }
 
+// Queries
 
 module.exports.createUser = function (name,password,email,response, res){
 
@@ -190,6 +193,12 @@ module.exports.createLike = function(req,res,username){
         res.json({success: true, msg: 'Like created'}); 
 
     });
+}
+
+module.exports.addClicks = function(req,res,username){
+
+    // ...
+
 }
 
 
